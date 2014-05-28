@@ -118,8 +118,8 @@
     function changeClusterColor(clusterID, colorString){
       // changes color by cluster reference
       //scene.getObjectByName( "objectName", true ); // alternative to getByName
-      for(var i=0; i<clusters[1].clusterPlanets.length; i++){
-        scene.getObjectById(clusters[i].clusterPlanets[3].sphereID).material.color.setRGB(1,0,0);
+      for(var i=0; i<clusters[clusterID].clusterPlanets.length; i++){
+        scene.getObjectById(clusters[clusterID].clusterPlanets[i].sphereID).material.color.setHex(colorString);
       }
     } 
 
