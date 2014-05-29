@@ -4,7 +4,7 @@
     var cycles = [ .7, .75, .80, .85, .90, .95, 1.0, 1.05, 1.1, 1.15, 1.20, 1.25];
     var speed;
     var rotation = 1;
-    var ss = {"angle": 90, "angleIncrement":0.03, "amplitude": 5, "cycles":1,"period":1,"verticalShift": 0, "horizontalShift": 0
+    var ss = {"angle": 90, "angleIncrement":0.03, "amplitude": 5, "cycles":1,"period":1,"verticalShift": 0, "xShift": 0,"zShift": 0, "horizontalShift": 0
     };
 
     //Project Variable
@@ -191,9 +191,10 @@
               planetRef = clusterRef.clusterPlanets[p];
 
               // udpate x,y and z around central orbit
-              planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
-              planetRef.sphere.position.x = (ss.amplitude * planetRef.planetAmplitude) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].x;
-              planetRef.sphere.position.z = (ss.amplitude * planetRef.planetAmplitude) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].z;
+              // planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
+              planetRef.sphere.position.y = clusterRef.clusterPlanets[0].sphere.position.y;
+              planetRef.sphere.position.x = (ss.amplitude * planetRef.planetAmplitude) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.x;
+              planetRef.sphere.position.z = (ss.amplitude * planetRef.planetAmplitude) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.z;
             }
           }
 
@@ -260,5 +261,7 @@
       gui.add(ss, 'cycles', 0, 1, 0.01);
       gui.add(ss, 'period', 0, 1, .1);
       gui.add(ss, 'verticalShift', 0, 100, 1);
+      gui.add(ss, 'xShift', 0, 100, 1);
+      gui.add(ss, 'zShift', 0, 100, 1);
       gui.add(ss, 'horizontalShift', 0, 100, 1);
       // gui.add(ss, 'explode');
