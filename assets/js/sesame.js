@@ -4,7 +4,7 @@
     var cycles = [ .7, .75, .80, .85, .90, .95, 1.0, 1.05, 1.1, 1.15, 1.20, 1.25];
     var speed;
     var rotation = 1;
-    var ss = {"angle": 90, "angleIncrement":0.03, "amplitude": 100, "cycles":1,"period":1,"verticalShift": 0, "horizontalShift": 0
+    var ss = {"angle": 90, "angleIncrement":0.03, "amplitude": 25, "cycles":1,"period":1,"verticalShift": 0, "horizontalShift": 0
     };
 
     //Planet Variables
@@ -86,6 +86,7 @@
             orbit:      RADIUS*.5 + (RADIUS * .5 * Math.random()),
             geometry:   geometry,
             material:   material,
+            sphereInitID: i,
             sphere:     spheres[i],
             sphereID:   spheres[i].id,
             planetAmplitude : Math.floor(Math.random() * 20 + 5),
@@ -166,19 +167,27 @@
 
       function loop(){
           ss.angle += ss.angleIncrement;
-          for(var i=0; len = spheres.length, i < len; i++){
-            // spheres[i].position.y = (60-Math.sin(angle.angle)) * (planets[i].speed * speedScaler.speedScalar) * planets[i].relative;
 
-            spheres[i].position.y = (60-Math.sin(ss.angle)) * planets[i].random + sizes[0] * planets[i].relative;
+          //local variable for eff's sake
+          var clusterRef;
+          var planetRef;
 
-            // spheres[i].position.x = Math.cos(angle.angle * planets[i].speed)*85 * (planets[i].speed * speedScaler.speedScalar);
-
-            spheres[i].position.x = (ss.amplitude * planets[i].planetAmplitude) * Math.cos(planets[i].cycle*(ss.angle - ss.horizontalShift) * planets[i].speed) + ss.verticalShift;
-
-            // spheres[i].position.z = Math.sin(angle.angle * planets[i].speed)*85 * (planets[i].speed * speedScaler.speedScalar);
-
-            spheres[i].position.z = (ss.amplitude * planets[i].planetAmplitude) * Math.sin(planets[i].cycle*(ss.angle - ss.horizontalShift) * planets[i].speed) + ss.verticalShift;
+          //Update every planet(p) of every cluster(c) 
+          for(var c=0; c < clusters.length; c++){
+            clusterRef = clusters[c];
+            //iterate through every every planet of every cluster
+            for(var p=0; p < clusters[c].clusterPlanets.length; p++){
+              planetRef = clusterRef.clusterPlanets[p];
+              //update y
+              planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
+              //update x
+              planetRef.sphere.position.x = (ss.amplitude * planetRef.planetAmplitude) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;
+              //update z
+              planetRef.sphere.position.z = (ss.amplitude * planetRef.planetAmplitude) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;
+            }
           }
+
+          //Renderer Animation managment
           renderer.clear();
           camera.lookAt(scene.position);
           renderer.render(scene,camera);
@@ -195,7 +204,7 @@
       // Adds a GUI interface for changing the orbit
       var gui = new DAT.GUI();
       gui.add(ss, 'angleIncrement', 0, 1, 0.01);
-      gui.add(ss, 'amplitude', 0, 200, 1);
+      gui.add(ss, 'amplitude', 0, 25, .5);
       gui.add(ss, 'cycles', 0, 1, 0.01);
       gui.add(ss, 'period', 0, 1, .1);
       gui.add(ss, 'verticalShift', 0, 100, 1);
