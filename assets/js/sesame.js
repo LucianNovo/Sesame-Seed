@@ -78,6 +78,11 @@
           spheres[i]     = new THREE.Mesh( geometry, material );
           // scene.add(spheres[i]);
 
+          var outlineMaterial1 = new THREE.MeshBasicMaterial( { color: 0xff0000, side: THREE.BackSide } );
+          var outlineMesh1 = new THREE.Mesh( geometry, outlineMaterial1 );
+          outlineMesh1.position = spheres[i].position;
+          outlineMesh1.scale.multiplyScalar(1.05);
+
           // Create a new planet reference
           var planetSpawn = new planet();
           planetSpawn = {
@@ -93,8 +98,10 @@
             sphere:     spheres[i],
             sphereID:   spheres[i].id,
             planetAmplitude : Math.floor(Math.random() * 20 + 5),
+            outline:    outlineMesh1,
           }
           scene.add(planetSpawn.sphere);
+          scene.add( outlineMesh1 );
 
           planets[i] = planetSpawn;
         }
@@ -183,9 +190,9 @@
             //Give each central planet a color
             clusters[c].clusterPlanets[0].sphere.material.color.setRGB(1,0,0); 
             //update orbit around universal center (0,0,0)
-            planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
-            planetRef.sphere.position.x = (ss.clusterAmplitude * planetRef.planetAmplitude) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;
-            planetRef.sphere.position.z = (ss.clusterAmplitude * planetRef.planetAmplitude) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;         
+            planetRef.outline.position.y = planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
+            planetRef.outline.position.x = planetRef.sphere.position.x = (ss.clusterAmplitude * planetRef.planetAmplitude) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;
+            planetRef.outline.position.z = planetRef.sphere.position.z = (ss.clusterAmplitude * planetRef.planetAmplitude) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;         
 
             //iterate through every every planet of every cluster
             for(var p=1; p < clusters[c].clusterPlanets.length; p++){
@@ -195,9 +202,9 @@
               planetRef.sphere.material.color.setHex(["0x32450C", "0x717400", "0xDC8505", "0xEC5519", "0xBE2805","0x32450C", "0x717400", "0xDC8505", "0xEC5519", "0xBE2805","0x32450C", "0x717400", "0xDC8505", "0xEC5519", "0xBE2805","0x32450C"][c]);
               // udpate x,y and z around central orbit
               // planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
-              planetRef.sphere.position.y = clusterRef.clusterPlanets[0].sphere.position.y;
-              planetRef.sphere.position.x = (planetRef.planetAmplitude) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.x;
-              planetRef.sphere.position.z = (planetRef.planetAmplitude) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.z;
+              planetRef.outline.position.y = planetRef.sphere.position.y = clusterRef.clusterPlanets[0].sphere.position.y;
+              planetRef.outline.position.x = planetRef.sphere.position.x = (planetRef.planetAmplitude) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.x;
+              planetRef.outline.position.z = planetRef.sphere.position.z = (planetRef.planetAmplitude) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.z;
             }
           }
 
