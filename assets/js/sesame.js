@@ -4,8 +4,11 @@
     var cycles = [ .7, .75, .80, .85, .90, .95, 1.0, 1.05, 1.1, 1.15, 1.20, 1.25];
     var speed;
     var rotation = 1;
-    var ss = {"angle": 90, "angleIncrement":0.03, "amplitude": 25, "cycles":1,"period":1,"verticalShift": 0, "horizontalShift": 0
+    var ss = {"angle": 90, "angleIncrement":0.03, "amplitude": 5, "cycles":1,"period":1,"verticalShift": 0, "horizontalShift": 0
     };
+
+    //Project Variable
+    var projector;
 
     //Planet Variables
     var planets;
@@ -175,17 +178,25 @@
           //Update every planet(p) of every cluster(c) 
           for(var c=0; c < clusters.length; c++){
             clusterRef = clusters[c];
+            planetRef  = clusters[c].clusterPlanets[0];
+
+
+            //update orbit around universal center (0,0,0)
+            planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
+            planetRef.sphere.position.x = (ss.amplitude * planetRef.planetAmplitude) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;
+            planetRef.sphere.position.z = (ss.amplitude * planetRef.planetAmplitude) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;         
+
             //iterate through every every planet of every cluster
-            for(var p=0; p < clusters[c].clusterPlanets.length; p++){
+            for(var p=1; p < clusters[c].clusterPlanets.length; p++){
               planetRef = clusterRef.clusterPlanets[p];
-              //update y
+
+              // udpate x,y and z around central orbit
               planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
-              //update x
-              planetRef.sphere.position.x = (ss.amplitude * planetRef.planetAmplitude) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;
-              //update z
-              planetRef.sphere.position.z = (ss.amplitude * planetRef.planetAmplitude) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;
+              planetRef.sphere.position.x = (ss.amplitude * planetRef.planetAmplitude) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].x;
+              planetRef.sphere.position.z = (ss.amplitude * planetRef.planetAmplitude) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].z;
             }
           }
+
 
           //Renderer Animation managment
           renderer.clear();
@@ -193,9 +204,50 @@
           renderer.render(scene,camera);
       }
 
+      function onDocumentMouseDown( event ) {
+
+        event.preventDefault();
+
+        var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 );
+        projector.unprojectVector( vector, camera );
+
+        var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+
+        var intersects = raycaster.intersectObjects( spheres );
+
+        if ( intersects.length > 0 ) {
+
+          //makes object clicked.
+          intersects[ 0 ].object.material.color.setHex(0xffffff);
+          console.log(intersects[ 0 ].object);
+
+          //Creates a particle where cube is clicked
+          // var particle = new THREE.Sprite( particleMaterial );
+          // particle.position = intersects[ 0 ].point;
+          // particle.scale.x = particle.scale.y = 16;
+          // scene.add( particle );
+
+        }
+
+        /*
+        // Parse all the faces
+        for ( var i in intersects ) {
+
+          intersects[ i ].face.material[ 0 ].color.setHex( Math.random() * 0xffffff | 0x80000000 );
+
+        }
+        */
+      }
+
       init();
       function init(){
+
         createPlanets();
+
+        projector = new THREE.Projector();
+
+        document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+
         setInterval(loop, 1000/60);
       }
 
