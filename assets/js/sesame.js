@@ -4,7 +4,7 @@
     var cycles = [ .7, .75, .80, .85, .90, .95, 1.0, 1.05, 1.1, 1.15, 1.20, 1.25];
     var speed;
     var rotation = 1;
-    var ss = {"angle": 90, "angleIncrement":0.03, "amplitude": 5, "cycles":1,"period":1,"verticalShift": 0, "xShift": 0,"zShift": 0, "horizontalShift": 0
+    var ss = {"angle": 90, "angleIncrement":0.03, "clusterAmplitude": 5, "planetAmplitude": 1, "amplitude": 3, "cycles":1,"period":1,"verticalShift": 0, "xShift": 0,"zShift": 0, "horizontalShift": 0
     };
 
     //Project Variable
@@ -180,21 +180,24 @@
             clusterRef = clusters[c];
             planetRef  = clusters[c].clusterPlanets[0];
 
-
+            //Give each central planet a color
+            clusters[c].clusterPlanets[0].sphere.material.color.setRGB(1,0,0); 
             //update orbit around universal center (0,0,0)
             planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
-            planetRef.sphere.position.x = (ss.amplitude * planetRef.planetAmplitude) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;
-            planetRef.sphere.position.z = (ss.amplitude * planetRef.planetAmplitude) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;         
+            planetRef.sphere.position.x = (ss.clusterAmplitude * planetRef.planetAmplitude) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;
+            planetRef.sphere.position.z = (ss.clusterAmplitude * planetRef.planetAmplitude) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;         
 
             //iterate through every every planet of every cluster
             for(var p=1; p < clusters[c].clusterPlanets.length; p++){
               planetRef = clusterRef.clusterPlanets[p];
 
+              //change the color of every planet in the cluster
+              planetRef.sphere.material.color.setHex(["0x32450C", "0x717400", "0xDC8505", "0xEC5519", "0xBE2805","0x32450C", "0x717400", "0xDC8505", "0xEC5519", "0xBE2805","0x32450C", "0x717400", "0xDC8505", "0xEC5519", "0xBE2805","0x32450C"][c]);
               // udpate x,y and z around central orbit
               // planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
               planetRef.sphere.position.y = clusterRef.clusterPlanets[0].sphere.position.y;
-              planetRef.sphere.position.x = (ss.amplitude * planetRef.planetAmplitude) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.x;
-              planetRef.sphere.position.z = (ss.amplitude * planetRef.planetAmplitude) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.z;
+              planetRef.sphere.position.x = (planetRef.planetAmplitude) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.x;
+              planetRef.sphere.position.z = (planetRef.planetAmplitude) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.z;
             }
           }
 
@@ -258,6 +261,8 @@
       var gui = new DAT.GUI();
       gui.add(ss, 'angleIncrement', 0, 1, 0.01);
       gui.add(ss, 'amplitude', 0, 25, .5);
+      gui.add(ss, 'clusterAmplitude', 0, 25, .5);
+      gui.add(ss, 'planetAmplitude', 0, 25, .5);
       gui.add(ss, 'cycles', 0, 1, 0.01);
       gui.add(ss, 'period', 0, 1, .1);
       gui.add(ss, 'verticalShift', 0, 100, 1);
