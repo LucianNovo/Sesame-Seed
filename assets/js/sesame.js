@@ -73,15 +73,16 @@
         planets = []; // reference from global
         spheres = []; // reference from global
         for(var i=0; i<PLANET_COUNT; i++){
+          //Sphere
           var geometry   = new THREE.SphereGeometry( sizes[Math.floor(Math.random() * sizes.length)], 8, 8 );
           var material   = new THREE.MeshBasicMaterial( {color: Number(kuler[Math.floor(Math.random() * kuler.length)])});
           spheres[i]     = new THREE.Mesh( geometry, material );
-          // scene.add(spheres[i]);
 
-          var outlineMaterial1 = new THREE.MeshBasicMaterial( { color: 0xff0000, side: THREE.BackSide } );
+          //Outline
+          var outlineMaterial1 = new THREE.MeshBasicMaterial( { opacity: 0, color: 0xff0000, side: THREE.BackSide } );
           var outlineMesh1 = new THREE.Mesh( geometry, outlineMaterial1 );
-          outlineMesh1.position = spheres[i].position;
-          outlineMesh1.scale.multiplyScalar(1.05);
+          // console.log(outlineMesh1);
+          outlineMesh1.scale.multiplyScalar(1.1);
 
           // Create a new planet reference
           var planetSpawn = new planet();
@@ -101,8 +102,7 @@
             outline:    outlineMesh1,
           }
           scene.add(planetSpawn.sphere);
-          scene.add( outlineMesh1 );
-
+          // scene.add( outlineMesh1 );
           planets[i] = planetSpawn;
         }
 
@@ -133,6 +133,17 @@
         scene.getObjectById(clusters[clusterID].clusterPlanets[i].sphereID).material.color.setHex(colorString);
       }
     } 
+
+    function addOutline(clusterRef){
+      //change the outline of shit
+      for(var c=0;c<clusters.length;c++){
+        for(var p=0;p<clusters[c].clusterPlanets.length;p++){
+          if(clusters[c].clusterPlanets[p].uuid == clusterRef){
+            //if these two elements are the 
+          }
+        }
+      }
+    }
 
   // Creating the orbit
       var paused = false;
@@ -169,6 +180,36 @@
             camera.position.set(
               Math.sin(t/1000) * 300, sy, Math.cos(t/1000) * 300);
           }
+      }
+
+      function addOutline(meshRef){
+        var c=0;
+        loop1:
+        for(;c<clusters.length;c++){
+        loop2:
+          for(var p=0;p<clusters[c].clusterPlanets.length;p++){
+              console.log(meshRef + " : " + clusters[c].clusterPlanets[p].sphere.uuid);
+              if(clusters[c].clusterPlanets[p].sphere.uuid == meshRef){
+                //once they're the same, add outline for everything in the cluster c
+                console.log("Match! :" + meshRef + " " +  clusters[c].clusterPlanets[p].sphere.uuid);
+                break loop1;
+              }
+            }
+        }
+        console.log("The cluster of the id that's being organized: " + c);
+        for(var p=0;p<clusters[c].clusterPlanets.length;p++){
+            scene.add(clusters[c].clusterPlanets[p].outline);
+        }
+      }
+
+      function removeOutline(meshRef){
+        for(var c=0;c<clusters.length;c++){
+          for(var p=0;p<clusters[c].clusterPlanets.length;p++){
+            console.log(meshRef + " : " + clusters[c].clusterPlanets[p].sphere.uuid);
+            //once they're the same, add outline for everything in the cluster c
+            scene.remove(clusters[c].clusterPlanets[p].outline);
+            }
+        }
       }
 
       onmessage = function(ev) {
@@ -208,7 +249,6 @@
             }
           }
 
-
           //Renderer Animation managment
           renderer.clear();
           camera.lookAt(scene.position);
@@ -227,17 +267,20 @@
         var intersects = raycaster.intersectObjects( spheres );
 
         if ( intersects.length > 0 ) {
-
           //makes object clicked.
           intersects[ 0 ].object.material.color.setHex(0xffffff);
           console.log(intersects[ 0 ].object);
+          // addOutline(intersects[0].object.uuid);//
 
+          removeOutline(intersects[0].object.uuid);
+          addOutline(intersects[0].object.uuid);
+
+          // scene.getObjectById()
           //Creates a particle where cube is clicked
           // var particle = new THREE.Sprite( particleMaterial );
           // particle.position = intersects[ 0 ].point;
           // particle.scale.x = particle.scale.y = 16;
           // scene.add( particle );
-
         }
 
         /*
@@ -273,7 +316,7 @@
       gui.add(ss, 'cycles', 0, 1, 0.01);
       gui.add(ss, 'period', 0, 1, .1);
       gui.add(ss, 'verticalShift', 0, 100, 1);
-      gui.add(ss, 'xShift', 0, 100, 1);
-      gui.add(ss, 'zShift', 0, 100, 1);
-      gui.add(ss, 'horizontalShift', 0, 100, 1);
+      // gui.add(ss, 'xShift', 0, 100, 1);
+      // gui.add(ss, 'zShift', 0, 100, 1);
+      // gui.add(ss, 'horizontalShift', 0, 100, 1);
       // gui.add(ss, 'explode');
