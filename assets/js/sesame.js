@@ -7,6 +7,9 @@
     var ss = {"angle": 90, "angleIncrement":0.03, "clusterAmplitude": 5, "planetAmplitude": 1, "amplitude": 3, "cycles":1,"period":1,"verticalShift": 0, "xShift": 0,"zShift": 0, "horizontalShift": 0
     };
 
+    //Control Variable
+    var controls; 
+
     //Project Variable
     var projector;
 
@@ -28,35 +31,38 @@
     var cluster_count = Math.floor(Math.random() * CLUSTER_MAX + 2);
 
     // Creating the cube
-      var renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-      renderer.setSize(document.body.clientWidth, document.body.clientHeight);
-      document.body.appendChild(renderer.domElement);
-      // renderer.setClearColorHex(0xFFFFFF, 1.0);
-      renderer.setClearColor( 0x0000000, 1);
-      renderer.clear();
+    var renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+    renderer.setSize(document.body.clientWidth, document.body.clientHeight);
+    document.body.appendChild(renderer.domElement);
+    // renderer.setClearColorHex(0xFFFFFF, 1.0);
+    renderer.setClearColor( 0x0000000, 1);
+    renderer.clear();
 
-      var fov = 45;
-      var width  = renderer.domElement.width; 
-      var height = renderer.domElement.height;
+    var fov = 45;
+    var width  = renderer.domElement.width; 
+    var height = renderer.domElement.height;
 
-      var aspect = width/height;
+    var aspect = width/height;
 
-      var near = 1;
-      var far = 10000;
+    var near = 1;
+    var far = 10000;
 
-      var camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-      camera.position.z = 300;
+    var camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.z = 300;
 
-      var scene = new THREE.Scene();
-      var cube  = new THREE.Mesh(
-        new THREE.CubeGeometry(30,30,30),
-        new THREE.MeshBasicMaterial({color: 0xCCCCCC, opacity: 1})
-      );
-      scene.add(cube);
-      renderer.render(scene, camera);
+    //Controls for user navigation.
+    controls = new THREE.OrbitControls( camera );
+    controls.addEventListener( 'change', render );
 
-  // Creating the light
+    var scene = new THREE.Scene();
+    var cube  = new THREE.Mesh(
+      new THREE.CubeGeometry(30,30,30),
+      new THREE.MeshBasicMaterial({color: 0xCCCCCC, opacity: 1})
+    );
+    scene.add(cube);
+    renderer.render(scene, camera);
 
+    // Creating the light
     var dirLight = new THREE.DirectionalLight( 0xffffff, 0.125 );
     dirLight.position.set( 0, -1, 0 ).normalize();
     scene.add( dirLight );
@@ -125,6 +131,20 @@
         }
     }
 
+    function onWindowResize() {
+
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize( window.innerWidth, window.innerHeight );
+
+      render();
+
+    }
+
+    function render() {
+      renderer.render( scene, camera );
+    }
 
     function changeClusterColor(clusterID, colorString){
       // changes color by cluster reference
@@ -175,12 +195,12 @@
         }
       }
 
-      function cameraOrbit(t){
-          if(!down){
-            camera.position.set(
-              Math.sin(t/1000) * 300, sy, Math.cos(t/1000) * 300);
-          }
-      }
+      // function cameraOrbit(t){
+      //     if(!down){
+      //       camera.position.set(
+      //         Math.sin(t/1000) * 300, sy, Math.cos(t/1000) * 300);
+      //     }
+      // }
 
       function addOutline(meshRef){
         var c=0;
