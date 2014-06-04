@@ -1878,10 +1878,10 @@
                 <technique sid="COMMON">
                     <constant>
                         <transparent opaque="A_ONE">
-                            <color>0.0000000 0.0000000 0.0000000 1.0000000</color>
+                            <color>0.0000000 0.0000000 0.0000000 .50000000</color>
                         </transparent>
                         <transparency>
-                            <float>1.0000000</float>
+                            <float>.50000000</float>
                         </transparency>
                     </constant>
                 </technique>
