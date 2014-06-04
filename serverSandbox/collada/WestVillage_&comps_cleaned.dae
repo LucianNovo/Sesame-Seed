@@ -1877,7 +1877,7 @@
             <profile_COMMON>
                 <technique sid="COMMON">
                     <constant>
-                        <transparent opaque="A_ONE">
+                        <transparent opaque="RGB_ZERO">
                             <color>0.0000000 0.0000000 0.0000000 .50000000</color>
                         </transparent>
                         <transparency>
