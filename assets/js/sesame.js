@@ -72,7 +72,8 @@
     var RADIUS = 30;
     var relatives = [1, -1];
     var sizes  = [7, 8, 9, 10, 11];
-    var kuler  = ["0xFFFFFF","0x1C2842","0xFFF2B3"];
+    var kuler  = ["0x14A697", "0xF2C12E", "0xF29D35", "0xF27649", "0xF25252"];
+    // 00A388 79BD8F BEEB9F FFFF9D FF6138 FFFF9D BEEB9F", "79BD8F", "00A388"]
     // var kuler = ["0x32450C", "0x717400", "0xDC8505", "0xEC5519", "0xBE2805"];
 
     function createPlanets(){
@@ -260,7 +261,7 @@
               planetRef = clusterRef.clusterPlanets[p];
 
               //change the color of every planet in the cluster
-              planetRef.sphere.material.color.setHex(["0x32450C", "0x717400", "0xDC8505", "0xEC5519", "0xBE2805","0x32450C", "0x717400", "0xDC8505", "0xEC5519", "0xBE2805","0x32450C", "0x717400", "0xDC8505", "0xEC5519", "0xBE2805","0x32450C"][c]);
+              planetRef.sphere.material.color.setHex(["0x14A697", "0xF2C12E", "0xF29D35", "0xF27649", "0xF25252","0xF27649", "0xF25252","0x14A697", "0xF2C12E", "0xF29D35", "0xF27649", "0xF25252","0xF27649", "0xF25252"][c]);
               // udpate x,y and z around central orbit
               // planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
               planetRef.outline.position.y = planetRef.sphere.position.y = clusterRef.clusterPlanets[0].sphere.position.y;
