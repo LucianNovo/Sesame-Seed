@@ -144,14 +144,14 @@
 				setInterval(loop, 1000/60);
 			}
 
-			// var setMaterial = function(node, material) {
-			//   node.material = material;
-			//   if (node.children) {
-			//     for (var i = 0; i < node.children.length; i++) {
-			//       setMaterial(node.children[i], material);
-			//     }
-			//   }
-			// }
+			var setMaterial = function(node, material) {
+			  node.material = material;
+			  if (node.children) {
+			    for (var i = 0; i < node.children.length; i++) {
+			      setMaterial(node.children[i], material);
+			    }
+			  }
+			} //function taken from SO http://stackoverflow.com/questions/15025319/changing-texture-and-color-on-three-js-collada-object
 
 			function loop(){
 		        //Renderer Animation managment
@@ -159,6 +159,8 @@
 		        camera.lookAt(centerSesame);
 		        camera.position.z = 0;
 		        camera.position.x = 0;
+		        var meshMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, transparent: true, opacity: (150/camera.position.y) } );
+		        setMaterial(dae, meshMaterial);
 		        renderer.render(scene,camera);
 			}
 
@@ -166,6 +168,8 @@
 				camera.lookAt(centerSesame);
 				camera.position.z = 0;
 				camera.position.x = 0;
+		        var meshMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, transparent: true, opacity: (150/camera.position.y) } );
+		        setMaterial(dae, meshMaterial);
 				renderer.render( scene, camera );
 			}
 		</script>
