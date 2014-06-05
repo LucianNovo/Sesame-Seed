@@ -46,14 +46,11 @@
 			var dae, skin;
 			var directionalLight;
 
-			var colladaRef;
-
 			var loader = new THREE.ColladaLoader();
 			loader.options.convertUpAxis = true;
 			loader.load( 'collada/WestVillage_&comps_cleaned.dae', function ( collada ) {
 
 				dae = collada.scene;
-				colladaRef = collada;
 
 				dae.scale.x = dae.scale.y = dae.scale.z = 0.05;
 				dae.position.z = 88;
@@ -62,7 +59,7 @@
 				init();
 				animate();
 
-			});
+			} );
 
 			function init() {
 				//container
@@ -87,8 +84,8 @@
 
 					geometry.vertices.push( new THREE.Vector3( i, - 0.04, - size ) );
 					geometry.vertices.push( new THREE.Vector3( i, - 0.04,   size ) );
-				}
 
+				}
 				var line = new THREE.Line( geometry, material, THREE.LinePieces );
 				scene.add( line );
 
@@ -144,22 +141,12 @@
 				setInterval(loop, 1000/60);
 			}
 
-			var setMaterial = function(node, material) {
-			  node.material = material;
-			  if (node.children) {
-			    for (var i = 0; i < node.children.length; i++) {
-			      setMaterial(node.children[i], material);
-			    }
-			  }
-			}
-
 			function loop(){
 		        //Renderer Animation managment
 		        renderer.clear();
 		        camera.lookAt(centerSesame);
 		        camera.position.z = 0;
 		        camera.position.x = 0;
-		        setMaterial(dae,new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: camera.position.y/150}))
 		        renderer.render(scene,camera);
 			}
 
@@ -167,7 +154,6 @@
 				camera.lookAt(centerSesame);
 				camera.position.z = 0;
 				camera.position.x = 0;
-		        setMaterial(dae,new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: camera.position.y/150}))
 				renderer.render( scene, camera );
 			}
 		</script>
