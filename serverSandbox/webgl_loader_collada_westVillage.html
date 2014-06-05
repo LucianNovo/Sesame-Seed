@@ -159,7 +159,8 @@
 		        camera.lookAt(centerSesame);
 		        camera.position.z = 0;
 		        camera.position.x = 0;
-		        setMaterial(dae,new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: (140/camera.position.y)}))
+				var materialMesh = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: (140/camera.position.y)});
+		        setMaterial(dae, material);
 		        renderer.render(scene,camera);
 			}
 
@@ -167,7 +168,8 @@
 				camera.lookAt(centerSesame);
 				camera.position.z = 0;
 				camera.position.x = 0;
-		        setMaterial(dae,new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: (140/camera.position.y)}))
+				var materialMesh = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: (140/camera.position.y)});
+		        setMaterial(dae, material);
 				renderer.render( scene, camera );
 			}
 		</script>
