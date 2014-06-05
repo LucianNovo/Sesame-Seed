@@ -35,6 +35,7 @@
 		<script src="build/three.min.js"></script>
 
 		<script src="js/loaders/ColladaLoader.js"></script>
+		<script src="js/json2/json2.js"></script>
 
 		<script src="js/Detector.js"></script>
 		<script src="js/libs/stats.min.js"></script>
@@ -54,6 +55,7 @@
 			loader.load( 'collada/monster/monster.dae', function ( collada ) {
 
 				dae = collada.scene;
+				console.log(collada);
 				skin = collada.skins[ 0 ];
 
 				dae.scale.x = dae.scale.y = dae.scale.z = 0.002;
