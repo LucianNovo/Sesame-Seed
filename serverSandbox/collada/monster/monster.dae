@@ -1377,8 +1377,8 @@
             <reflectivity>
               <float>1</float>
             </reflectivity>
-            <transparent opaque="A_ONE">
-              <color>1 1 1 1</color>
+            <transparent opaque="RGB_ONE">
+              <color>.5 .5 .5 .5</color>
             </transparent>
             <transparency>
               <float>1</float>
