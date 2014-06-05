@@ -1377,13 +1377,8 @@
             <reflectivity>
               <float>1</float>
             </reflectivity>
-<<<<<<< HEAD
-            <transparent opaque="RGB_ONE">
-              <color>.5 .5 .5 .5</color>
-=======
             <transparent opaque="A_ONE">
               <color>1 1 1 1</color>
->>>>>>> 071d822baf0bb77ebf1fb2018f5cbad4ba74fa75
             </transparent>
             <transparency>
               <float>1</float>

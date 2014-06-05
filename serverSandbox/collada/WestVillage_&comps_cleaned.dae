@@ -1877,19 +1877,11 @@
             <profile_COMMON>
                 <technique sid="COMMON">
                     <constant>
-<<<<<<< HEAD
-                        <transparent opaque="A_ONE">
-                            <color>0.0000000 0.0000000 0.0000000 1.0000000</color>
-                        </transparent>
-                        <transparency>
-                            <float>1.0000000</float>
-=======
                         <transparent opaque="RGB_ONE">
                             <color>0.0000000 0.0000000 0.0000000 .50000000</color>
                         </transparent>
                         <transparency>
                             <float>.50000000</float>
->>>>>>> 071d822baf0bb77ebf1fb2018f5cbad4ba74fa75
                         </transparency>
                     </constant>
                 </technique>
