@@ -61,65 +61,42 @@
 				controls.addEventListener( 'change', render );
 
 				scene = new THREE.Scene();
-				scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
-
-				// // world
-
-				// var geometry = new THREE.CylinderGeometry( 0, 10, 30, 4, 1 );
-				// var material =  new THREE.MeshLambertMaterial( { color:0xffffff, shading: THREE.FlatShading } );
-
-				// for ( var i = 0; i < 500; i ++ ) {
-
-				// 	var mesh = new THREE.Mesh( geometry, material );
-				// 	mesh.position.x = ( Math.random() - 0.5 ) * 1000;
-				// 	mesh.position.y = ( Math.random() - 0.5 ) * 1000;
-				// 	mesh.position.z = ( Math.random() - 0.5 ) * 1000;
-				// 	mesh.updateMatrix();
-				// 	mesh.matrixAutoUpdate = false;
-				// 	scene.add( mesh );
-
-				// }
-
+				// OPTIONAL fog
+				// scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
 
 				//put a circle at the center
 				var geometry = new THREE.SphereGeometry( 30, 32, 16 );
-				var material = new THREE.MeshLambertMaterial( { color: 0x000088 } );
+				var material = new THREE.MeshLambertMaterial( { color: 0xffffff, transparent: true, opacity: 1} );
 				mesh = new THREE.Mesh( geometry, material );
 				mesh.position.set(0,40,0);
 				scene.add(mesh);
 
-				// SUPER SIMPLE GLOW EFFECT
-				// use sprite because it appears the same from all angles
-				var spriteMaterial = new THREE.SpriteMaterial( 
-				{ 
-					map: new THREE.ImageUtils.loadTexture( 'images/glow.png' ), 
-					useScreenCoordinates: false, alignment: THREE.SpriteAlignment.center,
-					color: 0x0000ff, transparent: false, blending: THREE.AdditiveBlending
-				});
-				var sprite = new THREE.Sprite( spriteMaterial );
-				sprite.scale.set(200, 200, 1.0);
-				mesh.add(sprite); // this centers the glow at the mesh
-
-
-
-				// lights
-
+				// lights and corresponding location-indicating spheres
 				light = new THREE.DirectionalLight( 0xffffff );
 				light.position.set( 1, 1, 1 );
 				scene.add( light );
+				var geometry = new THREE.SphereGeometry( 2, 32, 16 );
+				var material = new THREE.MeshLambertMaterial( { color: 0xffffff} );
+				directionalLightMesh1 = new THREE.Mesh( geometry, material );
+				directionalLightMesh1.position.set( 1, 1, 1 );
+				scene.add(directionalLightMesh1);
 
-				light = new THREE.DirectionalLight( 0x002288 );
+				light = new THREE.DirectionalLight( 0xffffff );
 				light.position.set( -1, -1, -1 );
 				scene.add( light );
+				var geometry = new THREE.SphereGeometry( 2, 32, 16 );
+				var material = new THREE.MeshLambertMaterial( { color: 0xffffff} );
+				directionalLightMesh2 = new THREE.Mesh( geometry, material );
+				directionalLightMesh2.position.set( -1, -1, -1 );
+				scene.add(directionalLightMesh2);
 
-				light = new THREE.AmbientLight( 0x222222 );
-				scene.add( light );
-
+				light = new THREE.AmbientLight( 0x000000 );
 
 				// renderer
 
 				renderer = new THREE.WebGLRenderer( { antialias: false } );
-				renderer.setClearColor( scene.fog.color, 1 );
+				// OPTIONAL fog
+				// renderer.setClearColor( scene.fog.color, 1 );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 
 				container = document.getElementById( 'container' );
