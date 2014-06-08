@@ -1,3 +1,4 @@
+
 var dae, skin;
 var camera, scene, renderer, objects;
 var particleLight, pointLight;
@@ -30,7 +31,7 @@ function init(){
 
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize( window.innerWidth, window.innerHeight );
-	scene.add( new THREE.AmbientLight( 0xFF0000 );
+	scene.add( new THREE.AmbientLight( 0xFF0000 ) );
 
 	// Add the COLLADA
 	scene.add( dae );
