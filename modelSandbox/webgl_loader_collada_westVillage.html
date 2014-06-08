@@ -77,7 +77,7 @@
 
 					sesameStoneDae.scale.x = sesameStoneDae.scale.y = sesameStoneDae.scale.z = .85;
 					sesameStoneDae.position.x = centerSesame.x;
-					sesameStoneDae.position.z = 2.3;
+					sesameStoneDae.position.z = 2;
 					sesameStoneDae.updateMatrix();
 
 					init();
@@ -213,11 +213,11 @@
 		        	sesameStoneDae.position.y = 160;
 
 		        	//not orbit sesame
-		        	controls.target(sesameStoneDae.position);
+		        	controls.target.set(sesameStoneDae.position);
 		        }
 		        else{
 		        	///then look at sesame
-		        	console.log("Something cray happened with the camera movement " + this);
+		        	console.log("Something cray happened with the camera movement ");
 		        }
 		        renderer.render(scene,camera);
 			}
