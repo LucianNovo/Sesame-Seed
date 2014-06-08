@@ -173,7 +173,6 @@
 			function loop(){
 		        //Renderer Animation managment
 		        renderer.clear();
-		        camera.lookAt(centerSesame);
 		        camera.position.z = 0;
 		        camera.position.x = 0;
 		        //set the transparency of the mesh
@@ -193,21 +192,32 @@
 			}
 
 			function render() {
-				camera.position.z = 0;
-				camera.position.x = 0;
 		        //set the transparency of the mesh
 		        var meshMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, transparent: true, opacity: (.75/camera.position.y) } );
 		        setMaterial(dae, meshMaterial);
 				//set the height of the sesame stone and camera
-		        if(camera.position.y <= 80){
-		        	///then look at sesame
+		        if((camera.position.y <= 80))){
+		        	// Look at the Center of the city scape
+		        	sesameStoneDae.position.y = camera.position.y * .9;
 		        	camera.lookAt(centerSesame);
+					camera.position.z = 0;
+					camera.position.x = 0;
+		        }
+		        else if((camera.position.y >= 80) && (camera.position.y <= 150)){
+		        	//Then look at the floating sesame
+		        	camera.lookAt(sesameStone.position);
+					camera.position.z = 0;
+					camera.position.x = 0;
+					sesameStoneDae.position.y = camera.position.y;
+		        }
+		        else if(camera.position.y > 150){
+		        	//Then initiate the orbiting controls
+		        	controls.target(sesameStone.position);
 		        }
 		        else{
 		        	///then look at sesame
-		        	camera.lookAt(sesameStoneDae.position);
+		        	console.log("Something cray happened with the camera movement " + this);
 		        }
-		        sesameStoneDae.position.y = camera.position.y;
 		        renderer.render(scene,camera);
 			}
 		</script>
