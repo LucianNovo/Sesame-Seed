@@ -1,11 +1,48 @@
 
-    var spheres;
+    var spheres, lines;
     var speeds = [ .15,.25, .35, .4, .5, .6, .75, .85, 1, 1.15, 1.25, 1.5];
     var cycles = [ .7, .75, .80, .85, .90, .95, 1.0, 1.05, 1.1, 1.15, 1.20, 1.25];
     var speed;
     var rotation = 1;
-    var ss = {"angle": 90, "angleIncrement":0.0, "clusterAmplitude": 50, "planetAmplitude": 1, "amplitude": 3, "cycles":1,"period":1,"verticalShift": 0, "xShift": 0,"zShift": 0, "horizontalShift": 0
+    var ss = {
+      "angle": 90, 
+      "angleIncrement":0.0, 
+      "clusterAmplitude": 50, 
+      "planetAmplitude": 1, 
+      "amplitude": 3, 
+      "cycles":1,
+      "period":1,
+      "verticalShift": 0, 
+      "xShift": 0,
+      "zShift": 0, 
+      "horizontalShift": 0,
+      // // categories: ["living", "outside", "workshop", "food", "technology", "play"],
+      // viewThreshold: 18000,
+      // maxIblesPerAuthor: 30,
+      // width: document.body.clientWidth,
+      // height: document.body.clientHeight,
+      // cameraDefaultPosition: new THREE.Vector3( 222.3842933874708, 388.94164021652136, 224.33347974950735),
+      // cameraDefaultTarget: new THREE.Vector3(0, 0, 0),
+      // cameraDefaultUp: (new THREE.Vector3(0, 0.93, 0.36)).normalize(),
+      // cameraDefaultFOV: 45
     };
+
+    ss.Settings = {
+      // categories: ["living", "outside", "workshop", "food", "technology", "play"],
+      viewThreshold: 18000,
+      maxIblesPerAuthor: 30,
+      width: document.body.clientWidth,
+      height: document.body.clientHeight,
+      cameraDefaultPosition: new THREE.Vector3( 222.3842933874708, 388.94164021652136, 224.33347974950735),
+      cameraDefaultTarget: new THREE.Vector3(0, 0, 0),
+      cameraDefaultUp: (new THREE.Vector3(0, 0.93, 0.36)).normalize(),
+      cameraDefaultFOV: 45
+    };
+
+    ss.Status = {
+      cameraAnimating: false,
+      firstClick: false,
+    }
 
     //Control Variable
     var controls; 
@@ -22,9 +59,11 @@
     var clusters = [];
     // var cluster  = {"cluster_ID": 0, "name": "untitled","clusterPlanets" : []};
     function cluster(cluster_ID){
-      this.cluster_ID = cluster_ID;
-      this.name = "untitled";
+      this.cluster_ID     = cluster_ID;
+      this.name           = "untitled";
       this.clusterPlanets = [];
+      this.lineMaterial   = new THREE.LineBasicMaterial({color: 0xFFFFFF});//white line material
+      this.lineStack      = [];
     }
 
     var CLUSTER_MAX   = 8;
@@ -48,7 +87,8 @@
     var far = 10000;
 
     var camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.z = 300;
+    camera.position = ss.Settings.cameraDefaultPosition;
+    camera.lookAt(ss.Settings.cameraDefaultTarget.x,ss.Settings.cameraDefaultTarget.y,ss.Settings.cameraDefaultTarget.z);
 
     //Controls for user navigation.
     controls = new THREE.OrbitControls( camera );
@@ -79,6 +119,7 @@
     function createPlanets(){
         planets = []; // reference from global
         spheres = []; // reference from global
+        lineVerts=[]; // reference from global
         for(var i=0; i<PLANET_COUNT; i++){
           //Sphere
           var geometry   = new THREE.SphereGeometry( sizes[Math.floor(Math.random() * sizes.length)], 8, 8 );
@@ -122,14 +163,33 @@
         while(planet_inc < planets.length){
           clusters[cluster_inc] = new cluster(planet_inc);
           clusters[cluster_inc].cluster_ID = cluster_inc; 
+          
           //for each size of each cluster
           for(cluster_iter = 0; ((cluster_iter < cluster_count) && (planet_inc < planets.length)); cluster_iter++){
             //add a planet to the iterated cluster
-            clusters[cluster_inc].clusterPlanets[cluster_iter] = planets[planet_inc++];
-            //add a planet to the iterated cluster
+            clusters[cluster_inc].clusterPlanets[cluster_iter] = planets[planet_inc];
+            //add a line to the iterated planets
+
+            var material = new THREE.LineBasicMaterial({color: 0xffffff});
+
+            var geometry = new THREE.Geometry();
+            geometry.verticesNeedUpdate = true;
+            geometry.distancesNeedUpate = true;
+            geometry.dynamic = true;
+            geometry.vertices.push(new THREE.Vector3(0,0,0));
+            geometry.vertices.push(new THREE.Vector3(0,0,0));
+
+            var line = new THREE.Line(geometry, material);
+            scene.add(line);
+
+            lineVerts.push(line);
+            clusters[cluster_inc].lineStack[cluster_iter] = line;
+            planet_inc++;
           }
           cluster_inc++;
         }
+
+
     }
 
     function onWindowResize() {
@@ -144,6 +204,7 @@
     }
 
     function render() {
+
       renderer.render( scene, camera );
     }
 
@@ -265,6 +326,12 @@
               planetRef.outline.position.y = planetRef.sphere.position.y = clusterRef.clusterPlanets[0].sphere.position.y;
               planetRef.outline.position.x = planetRef.sphere.position.x = (planetRef.planetAmplitude + (planetRef.planetAmplitude * ss.planetAmplitude)) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.x;
               planetRef.outline.position.z = planetRef.sphere.position.z = (planetRef.planetAmplitude + (planetRef.planetAmplitude * ss.planetAmplitude)) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.z;
+            
+              //change the intra-cluster network
+              clusterRef.lineStack[p].geometry.dynamic = true;
+              clusterRef.lineStack[p].geometry.vertices[0].set(clusterRef.clusterPlanets[0].sphere.position.x,clusterRef.clusterPlanets[0].sphere.position.y,clusterRef.clusterPlanets[0].sphere.position.z);
+              clusterRef.lineStack[p].geometry.vertices[1].set(planetRef.sphere.position.x,planetRef.sphere.position.y,planetRef.sphere.position.z);
+              clusterRef.lineStack[p].geometry.verticesNeedUpdate = true;
             }
           }
 
@@ -343,7 +410,7 @@
 
       // Adds a GUI interface for changing the orbit
       var gui = new DAT.GUI();
-      gui.add(ss, 'angleIncrement', 0, 1, 0.01);
+      gui.add(ss, 'angleIncrement', 0, .25, 0.001);
       gui.add(ss, 'amplitude', 0, 25, .5);
       gui.add(ss, 'clusterAmplitude', 0, 200, .5);
       gui.add(ss, 'planetAmplitude', 0, 25, .5);
