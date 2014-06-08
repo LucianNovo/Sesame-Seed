@@ -71,7 +71,7 @@
 
 					sesameStoneDae.scale.x = sesameStoneDae.scale.y = sesameStoneDae.scale.z = .85;
 					sesameStoneDae.position.x = centerSesame.x;
-					sesameStoneDae.position.z = 2.7;
+					sesameStoneDae.position.z = 2.5;
 					sesameStoneDae.updateMatrix();
 
 					init();
@@ -202,6 +202,9 @@
 		        	camera.lookAt(centerSesame);
 					camera.position.z = 0;
 					camera.position.x = 0;
+
+					//don't glitch out by rotating
+					controls.noRotate = true;
 		        }
 		        else if((camera.position.y >= 80) && (camera.position.y <= 150)){
 		        	//Then look at the floating sesame
@@ -209,9 +212,13 @@
 					camera.position.z = 0;
 					camera.position.x = 0;
 					sesameStoneDae.position.y = camera.position.y;
+
+					//don't glitch out by rotating
+					controls.noRotate = true;
 		        }
 		        else if(camera.position.y > 150){
 		        	//Then initiate the orbiting controls
+		        	controls.noRotate = false;
 		        	controls.target(sesameStone.position);
 		        }
 		        else{
