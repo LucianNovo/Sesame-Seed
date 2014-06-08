@@ -30,6 +30,12 @@
 		<script src="build/three.min.js"></script>
 
 		<script src="js/loaders/ColladaLoader.js"></script>
+		<script type="text/javascript">
+			var orbitSettings = {
+				disableRotate : true,
+				panMode : true
+			}
+		</script>
 		<script src="OrbitControls.js"></script>
 
 		<script src="js/Detector.js"></script>
@@ -208,13 +214,16 @@
 		        }
 		        else if((camera.position.y >= 80) && (camera.position.y <= 150)){
 		        	//Then look at the floating sesame
+		        	sesameStoneDae.position.y = camera.position.y;
+
+		        	//direct the camera at the moving sesame
 		        	camera.lookAt(sesameStone.position);
-					camera.position.z = 0;
-					camera.position.x = 0;
-					sesameStoneDae.position.y = camera.position.y;
 
 					//don't glitch out by rotating
 					controls.noRotate = true;
+
+					//make every interaction a mouse movement
+					
 		        }
 		        else if(camera.position.y > 150){
 		        	//Then initiate the orbiting controls

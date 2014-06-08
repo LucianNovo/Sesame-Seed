@@ -119,10 +119,10 @@ THREE.OrbitControls = function ( object, domElement ) {
 	var startEvent = { type: 'start'};
 	var endEvent = { type: 'end'};
 
-	this.disableRotation = function () {
-		this.noRotate = false;
+	this.disableButPan = function () {
+		this.noRotate = true;
 	}
-	
+
 	this.rotateLeft = function ( angle ) {
 
 		if ( angle === undefined ) {
