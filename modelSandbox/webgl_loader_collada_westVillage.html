@@ -64,10 +64,10 @@
 
 				// init();
 				// animate();
-				loader2.load( 'collada/sesameStone.dae', function ( collada ) {
+				loader2.load( 'collada/sesameStone.dae', function ( collada2 ) {
 
-					sesameStoneDae = collada.scene;
-					sesameStoneRef = collada;
+					sesameStoneDae = collada2.scene;
+					sesameStoneRef = collada2;
 
 					sesameStoneDae.scale.x = sesameStoneDae.scale.y = sesameStoneDae.scale.z = 2;
 					sesameStoneDae.position.z = 10;
@@ -188,9 +188,12 @@
 				camera.lookAt(centerSesame);
 				camera.position.z = 0;
 				camera.position.x = 0;
+		        //set the transparency of the mesh
 		        var meshMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, transparent: true, opacity: (.75/camera.position.y) } );
 		        setMaterial(dae, meshMaterial);
-				renderer.render( scene, camera );
+		        //set the height of the sesame stone
+		        sesameStoneDae.position.y.set(camera.position.y);
+		        renderer.render(scene,camera);
 			}
 		</script>
 	</body>
