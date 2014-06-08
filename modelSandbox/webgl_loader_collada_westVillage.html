@@ -70,7 +70,8 @@
 					sesameStoneRef = collada2;
 
 					sesameStoneDae.scale.x = sesameStoneDae.scale.y = sesameStoneDae.scale.z = 1;
-					sesameStoneDae.position.z = 10;
+					sesameStoneDae.position.x = 120;
+					sesameStoneDae.position.z = 2.7;
 					sesameStoneDae.updateMatrix();
 
 					init();
@@ -180,7 +181,7 @@
 		        var meshMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, transparent: true, opacity: (.75/camera.position.y) } );
 		        setMaterial(dae, meshMaterial);
 		        //set the height of the sesame stone
-		        // sesameStoneDae.position.y = camera.position.y;
+		        sesameStoneDae.position.y = camera.position.y;
 		        renderer.render(scene,camera);
 			}
 
@@ -192,7 +193,7 @@
 		        var meshMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, transparent: true, opacity: (.75/camera.position.y) } );
 		        setMaterial(dae, meshMaterial);
 		        //set the height of the sesame stone
-		        // sesameStoneDae.position.y = camera.position.y;
+		        sesameStoneDae.position.y = camera.position.y;
 		        renderer.render(scene,camera);
 			}
 		</script>
