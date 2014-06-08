@@ -112,17 +112,17 @@
            toPoint
         ]);
 
-        //create a line along the spline
-        //materials and geometry
-        var lineMaterial = new THREE.LineBasicMaterial({color: 0xFFFFFF});
-        var lineGeometry  = new THREE.Geometry();
-        //line vertices
-        lineGeometry.vertices.push(fromPoint.clone());
-        lineGeometry.vertices.push(new THREE.Vector3( (toPoint.x-fromPoint.x)*0.5 + fromPoint.x, (toPoint.y-fromPoint.y)*0.5 + fromPoint.y, (toPoint.z-fromPoint.z)*0.7 + fromPoint.z));
-        lineGeometry.vertices.push(toPoint.clone());
-        //creating the line
-        var cameraSpline = new THREE.Line(lineGeometry, lineMaterial);
-        scene.add(cameraSpline);
+        // //create a line along the spline
+        // //materials and geometry
+        // var lineMaterial = new THREE.LineBasicMaterial({color: 0xFFFFFF});
+        // var lineGeometry  = new THREE.Geometry();
+        // //line vertices
+        // lineGeometry.vertices.push(fromPoint.clone());
+        // lineGeometry.vertices.push(new THREE.Vector3( (toPoint.x-fromPoint.x)*0.5 + fromPoint.x, (toPoint.y-fromPoint.y)*0.5 + fromPoint.y, (toPoint.z-fromPoint.z)*0.7 + fromPoint.z));
+        // lineGeometry.vertices.push(toPoint.clone());
+        // //creating the line
+        // var cameraSpline = new THREE.Line(lineGeometry, lineMaterial);
+        // scene.add(cameraSpline);
 
         return spline;
     }

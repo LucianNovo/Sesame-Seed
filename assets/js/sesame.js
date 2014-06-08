@@ -150,7 +150,6 @@
             outline:    outlineMesh1,
           }
           scene.add(planetSpawn.sphere);
-          // scene.add( outlineMesh1 );
           planets[i] = planetSpawn;
         }
 
@@ -171,7 +170,6 @@
             //add a line to the iterated planets
 
             var material = new THREE.LineBasicMaterial({color: 0xffffff});
-
             var geometry = new THREE.Geometry();
             geometry.verticesNeedUpdate = true;
             geometry.distancesNeedUpate = true;
@@ -180,7 +178,7 @@
             geometry.vertices.push(new THREE.Vector3(0,0,0));
 
             var line = new THREE.Line(geometry, material);
-            scene.add(line);
+            // scene.add(line);
 
             lineVerts.push(line);
             clusters[cluster_inc].lineStack[cluster_iter] = line;
@@ -284,6 +282,26 @@
         }
       }
 
+      function addLines(meshRef){
+        var c=0;
+        loop1:
+        for(;c<clusters.length;c++){
+        loop2:
+          for(var p=0;p<clusters[c].clusterPlanets.length;p++){
+              // console.log(meshRef + " : " + clusters[c].clusterPlanets[p].sphere.uuid);
+              if(clusters[c].clusterPlanets[p].sphere.uuid == meshRef){
+                //once they're the same, add outline for everything in the cluster c
+                // console.log("Match! :" + meshRef + " " +  clusters[c].clusterPlanets[p].sphere.uuid);
+                break loop1;
+              }
+            }
+        }
+        // console.log("The cluster of the id that's being organized: " + c);
+        for(var p=0;p<clusters[c].clusterPlanets.length;p++){
+            scene.add(clusters[c].lineStack[p]);
+        }
+      }
+
       function removeOutline(meshRef){
         for(var c=0;c<clusters.length;c++){
           for(var p=0;p<clusters[c].clusterPlanets.length;p++){
@@ -334,7 +352,6 @@
               clusterRef.lineStack[p].geometry.verticesNeedUpdate = true;
             }
           }
-
           //Renderer Animation managment
           renderer.clear();
           renderer.render(scene,camera);
@@ -362,6 +379,7 @@
           //remove all other outlines, add outline to this one
           removeOutline(intersects[0].object.uuid);
           addOutline(intersects[0].object.uuid);
+          addLines(intersects[0].object.uuid);
 
           // scene.getObjectById()
           //Creates a particle where cube is clicked
