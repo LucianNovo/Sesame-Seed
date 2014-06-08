@@ -101,6 +101,7 @@
         var destinationPoint = scene.getObjectById(zoomDestinationId);
         controls.target.set( destinationPoint.position.x,destinationPoint.position.y,destinationPoint.position.z);
         controls.enabled   = true;
+        controls.chillOut();
         console.log("End animation");
     }
 

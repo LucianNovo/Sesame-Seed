@@ -28,6 +28,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	// API
 
+
+
 	// Set to false to disable this control
 	this.enabled = true;
 
@@ -118,6 +120,17 @@ THREE.OrbitControls = function ( object, domElement ) {
 	var changeEvent = { type: 'change' };
 	var startEvent = { type: 'start'};
 	var endEvent = { type: 'end'};
+
+
+	this.chillOut = function (){
+		state = STATE.NONE; 
+	}
+
+	this.loosenUp = function (){
+		state = STATE.DOLLY; 
+		this.dollyIn(.5);
+		state = STATE.NONE; 
+	}
 
 	this.rotateLeft = function ( angle ) {
 
