@@ -41,7 +41,7 @@
 
 			var container, stats;
 
-			var camera, scene, renderer, objects, centerSesame, cameraLine;
+			var camera, scene, renderer, objects, centerSesame = new THREE.Vector3(80,0,0), cameraLine;
 			var particleLight, pointLight;
 			var dae, skin, sesameStoneDae;
 			var directionalLight;
@@ -70,7 +70,7 @@
 					sesameStoneRef = collada2;
 
 					sesameStoneDae.scale.x = sesameStoneDae.scale.y = sesameStoneDae.scale.z = 1;
-					sesameStoneDae.position.x = 120;
+					sesameStoneDae.position.x = centerSesame.x;
 					sesameStoneDae.position.z = 2.7;
 					sesameStoneDae.updateMatrix();
 
@@ -114,7 +114,6 @@
 				scene.add( sesameStoneDae );
 
 				//Create the camera line
-				centerSesame = new THREE.Vector3(80,0,0);
 				cameraLine = new THREE.Geometry();
 			    cameraLine.vertices.push(new THREE.Vector3(centerSesame));
 			    cameraLine.vertices.push(new THREE.Vector3(20, 40, 0));
@@ -180,19 +179,34 @@
 		        //set the transparency of the mesh
 		        var meshMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, transparent: true, opacity: (.75/camera.position.y) } );
 		        setMaterial(dae, meshMaterial);
-		        //set the height of the sesame stone
+		        //set the height of the sesame stone and camera
+		        if(camera.position.y <= 80){
+		        	///then look at sesame
+		        	camera.lookAt(centerSesame);
+		        }
+		        else{
+		        	///then look at sesame
+		        	camera.lookAt(sesameStoneDae.position.x,sesameStoneDae.position.y,sesameStoneDae.position.z);
+		        }
 		        sesameStoneDae.position.y = camera.position.y;
 		        renderer.render(scene,camera);
 			}
 
 			function render() {
-				camera.lookAt(centerSesame);
 				camera.position.z = 0;
 				camera.position.x = 0;
 		        //set the transparency of the mesh
 		        var meshMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, transparent: true, opacity: (.75/camera.position.y) } );
 		        setMaterial(dae, meshMaterial);
-		        //set the height of the sesame stone
+				//set the height of the sesame stone and camera
+		        if(camera.position.y <= 80){
+		        	///then look at sesame
+		        	camera.lookAt(centerSesame);
+		        }
+		        else{
+		        	///then look at sesame
+		        	camera.lookAt(sesameStoneDae.position.x,sesameStoneDae.position.y,sesameStoneDae.position.z);
+		        }
 		        sesameStoneDae.position.y = camera.position.y;
 		        renderer.render(scene,camera);
 			}
