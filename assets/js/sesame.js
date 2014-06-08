@@ -4,7 +4,7 @@
     var cycles = [ .7, .75, .80, .85, .90, .95, 1.0, 1.05, 1.1, 1.15, 1.20, 1.25];
     var speed;
     var rotation = 1;
-    var ss = {"angle": 90, "angleIncrement":0.03, "clusterAmplitude": 5, "planetAmplitude": 1, "amplitude": 3, "cycles":1,"period":1,"verticalShift": 0, "xShift": 0,"zShift": 0, "horizontalShift": 0
+    var ss = {"angle": 90, "angleIncrement":0.0, "clusterAmplitude": 5, "planetAmplitude": 1, "amplitude": 3, "cycles":1,"period":1,"verticalShift": 0, "xShift": 0,"zShift": 0, "horizontalShift": 0
     };
 
     //Control Variable
@@ -173,28 +173,28 @@
       var sx = 0;
       var sy = 0;
 
-      window.onmousedown = function (ev){
-        down = true; sx = ev.clientX; sy = ev.clientY;
-      }
-      window.onmouseup = function(){down = false}
-      window.onmousemove = function(ev){
-        if(down){
-          var dx = ev.clientX - sx;
-          var dy = ev.clientY - sy;
-          // console.log("X-location: " + ev.clientX);
-          // console.log("Y-location: " + ev.clientY);
-          rotation += dx/100;
-          // console.log("rotation: " + rotation);
-          camera.position.x = Math.cos(rotation)*250;
-          camera.position.z = Math.sin(rotation)*250;
-          camera.position.y += dy;
-          // console.log("Camera X position: " + camera.position.x); 
-          // console.log("Camera Z position: " + camera.position.z);
-          // console.log("Camera Y position: " + camera.position.y);
-          sx += dx;
-          sy += dy;
-        }
-      }
+      // window.onmousedown = function (ev){
+      //   down = true; sx = ev.clientX; sy = ev.clientY;
+      // }
+      // window.onmouseup = function(){down = false}
+      // window.onmousemove = function(ev){
+      //   if(down){
+      //     var dx = ev.clientX - sx;
+      //     var dy = ev.clientY - sy;
+      //     // console.log("X-location: " + ev.clientX);
+      //     // console.log("Y-location: " + ev.clientY);
+      //     rotation += dx/100;
+      //     // console.log("rotation: " + rotation);
+      //     camera.position.x = Math.cos(rotation)*250;
+      //     camera.position.z = Math.sin(rotation)*250;
+      //     camera.position.y += dy;
+      //     // console.log("Camera X position: " + camera.position.x); 
+      //     // console.log("Camera Z position: " + camera.position.z);
+      //     // console.log("Camera Y position: " + camera.position.y);
+      //     sx += dx;
+      //     sy += dy;
+      //   }
+      // }
 
       // function cameraOrbit(t){
       //     if(!down){
@@ -209,15 +209,15 @@
         for(;c<clusters.length;c++){
         loop2:
           for(var p=0;p<clusters[c].clusterPlanets.length;p++){
-              console.log(meshRef + " : " + clusters[c].clusterPlanets[p].sphere.uuid);
+              // console.log(meshRef + " : " + clusters[c].clusterPlanets[p].sphere.uuid);
               if(clusters[c].clusterPlanets[p].sphere.uuid == meshRef){
                 //once they're the same, add outline for everything in the cluster c
-                console.log("Match! :" + meshRef + " " +  clusters[c].clusterPlanets[p].sphere.uuid);
+                // console.log("Match! :" + meshRef + " " +  clusters[c].clusterPlanets[p].sphere.uuid);
                 break loop1;
               }
             }
         }
-        console.log("The cluster of the id that's being organized: " + c);
+        // console.log("The cluster of the id that's being organized: " + c);
         for(var p=0;p<clusters[c].clusterPlanets.length;p++){
             scene.add(clusters[c].clusterPlanets[p].outline);
         }
@@ -226,7 +226,7 @@
       function removeOutline(meshRef){
         for(var c=0;c<clusters.length;c++){
           for(var p=0;p<clusters[c].clusterPlanets.length;p++){
-            console.log(meshRef + " : " + clusters[c].clusterPlanets[p].sphere.uuid);
+            // console.log(meshRef + " : " + clusters[c].clusterPlanets[p].sphere.uuid);
             //once they're the same, add outline for everything in the cluster c
             scene.remove(clusters[c].clusterPlanets[p].outline);
             }
@@ -260,8 +260,7 @@
             for(var p=1; p < clusters[c].clusterPlanets.length; p++){
               planetRef = clusterRef.clusterPlanets[p];
 
-              //change the color of every planet in the cluster
-              planetRef.sphere.material.color.setHex(["0x14A697", "0xF2C12E", "0xF29D35", "0xF27649", "0xF25252","0xF27649", "0xF25252","0x14A697", "0xF2C12E", "0xF29D35", "0xF27649", "0xF25252","0xF27649", "0xF25252"][c]);
+              
               // udpate x,y and z around central orbit
               // planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
               planetRef.outline.position.y = planetRef.sphere.position.y = clusterRef.clusterPlanets[0].sphere.position.y;
@@ -272,7 +271,7 @@
 
           //Renderer Animation managment
           renderer.clear();
-          camera.lookAt(scene.position);
+          // camera.lookAt(scene.position);
           renderer.render(scene,camera);
       }
 
@@ -284,15 +283,18 @@
         projector.unprojectVector( vector, camera );
 
         var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
-
         var intersects = raycaster.intersectObjects( spheres );
 
         if ( intersects.length > 0 ) {
-          //makes object clicked.
+          //change color of planet to white
+          // console.log(intersects[0].object.id);
           intersects[ 0 ].object.material.color.setHex(0xffffff);
-          console.log(intersects[ 0 ].object);
-          // addOutline(intersects[0].object.uuid);//
+          // console.log(intersects[ 0 ].object);
+          addOutline(intersects[0].object.uuid);
 
+          zoomAndDollyToPoint(camera, intersects[0].object.id, function(){console.log("Done")}); 
+
+          //remove all other outlines, add outline to this one
           removeOutline(intersects[0].object.uuid);
           addOutline(intersects[0].object.uuid);
 
@@ -322,6 +324,19 @@
         projector = new THREE.Projector();
 
         document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+
+
+        //Update every planet(p) of every cluster(c) 
+        for(var c=0; c < clusters.length; c++){           
+          clusterRef = clusters[c];
+          planetRef  = clusters[c].clusterPlanets[0];  
+          //iterate through every every planet of every cluster
+          for(var p=1; p < clusters[c].clusterPlanets.length; p++){
+            planetRef = clusterRef.clusterPlanets[p];
+            //change the color of every planet in the cluster
+            planetRef.sphere.material.color.setHex(["0x14A697", "0xF2C12E", "0xF29D35", "0xF27649", "0xF25252","0xF27649", "0xF25252","0x14A697", "0xF2C12E", "0xF29D35", "0xF27649", "0xF25252","0xF27649", "0xF25252"][c]);
+          }
+        }
 
         setInterval(loop, 1000/60);
       }
