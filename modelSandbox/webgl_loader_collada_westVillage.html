@@ -219,6 +219,11 @@
 		        else if(camera.position.y > 150){
 		        	//Then initiate the orbiting controls
 		        	controls.noRotate = false;
+
+		        	//confine sesame to one place, there should be no way to move it elsewhere
+		        	camera.position.y = 160;
+
+		        	//not orbit sesame
 		        	controls.target(sesameStone.position);
 		        }
 		        else{
