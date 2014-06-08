@@ -196,7 +196,7 @@
 		        var meshMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, transparent: true, opacity: (.75/camera.position.y) } );
 		        setMaterial(dae, meshMaterial);
 				//set the height of the sesame stone and camera
-		        if((camera.position.y <= 80))){
+		        if(camera.position.y <= 80){
 		        	// Look at the Center of the city scape
 		        	sesameStoneDae.position.y = camera.position.y * .9;
 		        	camera.lookAt(centerSesame);
