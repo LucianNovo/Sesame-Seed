@@ -59,6 +59,19 @@
 				dae.position.z = 88;
 				dae.updateMatrix();
 
+				// init();
+				// animate();
+
+			} );
+			loader.load( 'collada/sesameStone.dae', function ( collada ) {
+
+				sesameStoneDae = collada.scene;
+				colladaRef = collada;
+
+				sesameStoneDae.scale.x = sesameStoneDae.scale.y = sesameStoneDae.scale.z = 0.05;
+				sesameStoneDae.position.z = 88;
+				sesameStoneDae.updateMatrix();
+
 				init();
 				animate();
 
@@ -94,6 +107,7 @@
 
 				// Add the COLLADA
 				scene.add( dae );
+				scene.add( sesameStoneDae );
 
 				//Create the camera line
 				centerSesame = new THREE.Vector3(80,0,0);

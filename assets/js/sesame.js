@@ -317,6 +317,7 @@
       };
 
       function loop(){
+        if(ss.angleIncrement > 0){
           ss.angle += ss.angleIncrement;
 
           //local variable for efficiency's sake
@@ -355,6 +356,7 @@
           //Renderer Animation managment
           renderer.clear();
           renderer.render(scene,camera);
+        }
       }
 
       function onDocumentMouseDown( event ) {
