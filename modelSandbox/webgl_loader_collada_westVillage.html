@@ -196,7 +196,7 @@
 		        	sesameStoneDae.position.y = camera.position.y;
 
 		        	//direct the camera at the moving sesame
-		        	camera.lookAt(sesameStone.position);
+		        	camera.lookAt(sesameStoneDae.position);
 
 					//don't glitch out by rotating
 					controls.noRotate = true;
@@ -213,7 +213,7 @@
 		        	sesameStoneDae.position.y = 160;
 
 		        	//not orbit sesame
-		        	controls.target(sesameStone.position);
+		        	controls.target(sesameStoneDae.position);
 		        }
 		        else{
 		        	///then look at sesame
