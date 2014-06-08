@@ -180,7 +180,7 @@
 		        var meshMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, transparent: true, opacity: (.75/camera.position.y) } );
 		        setMaterial(dae, meshMaterial);
 		        //set the height of the sesame stone
-		        sesameStoneDae.position.y.set(camera.position.y);
+		        sesameStoneDae.position.y = camera.position.y;
 		        renderer.render(scene,camera);
 			}
 
@@ -192,7 +192,7 @@
 		        var meshMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, transparent: true, opacity: (.75/camera.position.y) } );
 		        setMaterial(dae, meshMaterial);
 		        //set the height of the sesame stone
-		        sesameStoneDae.position.y.set(camera.position.y);
+		        sesameStoneDae.position.y = camera.position.y;
 		        renderer.render(scene,camera);
 			}
 		</script>
