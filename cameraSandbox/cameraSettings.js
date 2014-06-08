@@ -14,5 +14,5 @@ ss.Settings = {
 
 ss.Status = {
 	cameraAnimating: false,
-	firstClick: true,
+	firstClick: false,
 }

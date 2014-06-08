@@ -4,7 +4,7 @@
     var cycles = [ .7, .75, .80, .85, .90, .95, 1.0, 1.05, 1.1, 1.15, 1.20, 1.25];
     var speed;
     var rotation = 1;
-    var ss = {"angle": 90, "angleIncrement":0.0, "clusterAmplitude": 5, "planetAmplitude": 1, "amplitude": 3, "cycles":1,"period":1,"verticalShift": 0, "xShift": 0,"zShift": 0, "horizontalShift": 0
+    var ss = {"angle": 90, "angleIncrement":0.0, "clusterAmplitude": 50, "planetAmplitude": 1, "amplitude": 3, "cycles":1,"period":1,"verticalShift": 0, "xShift": 0,"zShift": 0, "horizontalShift": 0
     };
 
     //Control Variable
@@ -71,7 +71,7 @@
 
     var RADIUS = 30;
     var relatives = [1, -1];
-    var sizes  = [7, 8, 9, 10, 11];
+    var sizes  = [2,2.5,3,4,5];
     var kuler  = ["0x14A697", "0xF2C12E", "0xF29D35", "0xF27649", "0xF25252"];
     // 00A388 79BD8F BEEB9F FFFF9D FF6138 FFFF9D BEEB9F", "79BD8F", "00A388"]
     // var kuler = ["0x32450C", "0x717400", "0xDC8505", "0xEC5519", "0xBE2805"];
@@ -240,7 +240,7 @@
       function loop(){
           ss.angle += ss.angleIncrement;
 
-          //local variable for eff's sake
+          //local variable for efficiency's sake
           var clusterRef;
           var planetRef;
 
@@ -253,25 +253,23 @@
             clusters[c].clusterPlanets[0].sphere.material.color.setRGB(1,0,0); 
             //update orbit around universal center (0,0,0)
             planetRef.outline.position.y = planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
-            planetRef.outline.position.x = planetRef.sphere.position.x = (ss.clusterAmplitude * planetRef.planetAmplitude) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;
-            planetRef.outline.position.z = planetRef.sphere.position.z = (ss.clusterAmplitude * planetRef.planetAmplitude) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;         
+            planetRef.outline.position.x = planetRef.sphere.position.x = (ss.clusterAmplitude ) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;
+            planetRef.outline.position.z = planetRef.sphere.position.z = (ss.clusterAmplitude ) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;         
 
             //iterate through every every planet of every cluster
             for(var p=1; p < clusters[c].clusterPlanets.length; p++){
               planetRef = clusterRef.clusterPlanets[p];
 
-              
               // udpate x,y and z around central orbit
               // planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
               planetRef.outline.position.y = planetRef.sphere.position.y = clusterRef.clusterPlanets[0].sphere.position.y;
-              planetRef.outline.position.x = planetRef.sphere.position.x = (planetRef.planetAmplitude) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.x;
-              planetRef.outline.position.z = planetRef.sphere.position.z = (planetRef.planetAmplitude) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.z;
+              planetRef.outline.position.x = planetRef.sphere.position.x = (planetRef.planetAmplitude + (planetRef.planetAmplitude * ss.planetAmplitude)) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.x;
+              planetRef.outline.position.z = planetRef.sphere.position.z = (planetRef.planetAmplitude + (planetRef.planetAmplitude * ss.planetAmplitude)) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.z;
             }
           }
 
           //Renderer Animation managment
           renderer.clear();
-          // camera.lookAt(scene.position);
           renderer.render(scene,camera);
       }
 
@@ -347,12 +345,8 @@
       var gui = new DAT.GUI();
       gui.add(ss, 'angleIncrement', 0, 1, 0.01);
       gui.add(ss, 'amplitude', 0, 25, .5);
-      gui.add(ss, 'clusterAmplitude', 0, 25, .5);
+      gui.add(ss, 'clusterAmplitude', 0, 200, .5);
       gui.add(ss, 'planetAmplitude', 0, 25, .5);
       gui.add(ss, 'cycles', 0, 1, 0.01);
       gui.add(ss, 'period', 0, 1, .1);
       gui.add(ss, 'verticalShift', 0, 100, 1);
-      // gui.add(ss, 'xShift', 0, 100, 1);
-      // gui.add(ss, 'zShift', 0, 100, 1);
-      // gui.add(ss, 'horizontalShift', 0, 100, 1);
-      // gui.add(ss, 'explode');
