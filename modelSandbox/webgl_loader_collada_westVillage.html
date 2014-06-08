@@ -77,7 +77,7 @@
 
 					sesameStoneDae.scale.x = sesameStoneDae.scale.y = sesameStoneDae.scale.z = .85;
 					sesameStoneDae.position.x = centerSesame.x;
-					sesameStoneDae.position.z = 2.5;
+					sesameStoneDae.position.z = 2.3;
 					sesameStoneDae.updateMatrix();
 
 					init();
@@ -177,27 +177,6 @@
 			} //function taken from SO http://stackoverflow.com/questions/15025319/changing-texture-and-color-on-three-js-collada-object
 
 			function loop(){
-		        //Renderer Animation managment
-		        renderer.clear();
-		        camera.position.z = 0;
-		        camera.position.x = 0;
-		        //set the transparency of the mesh
-		        var meshMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, transparent: true, opacity: (.75/camera.position.y) } );
-		        setMaterial(dae, meshMaterial);
-		        //set the height of the sesame stone and camera
-		        if(camera.position.y <= 80){
-		        	///then look at sesame
-		        	camera.lookAt(centerSesame);
-		        }
-		        else{
-		        	///then look at sesame
-		        	camera.lookAt(sesameStoneDae.position);
-		        }
-		        sesameStoneDae.position.y = camera.position.y;
-		        renderer.render(scene,camera);
-			}
-
-			function render() {
 		        //set the transparency of the mesh
 		        var meshMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, transparent: true, opacity: (.75/camera.position.y) } );
 		        setMaterial(dae, meshMaterial);
@@ -221,16 +200,17 @@
 
 					//don't glitch out by rotating
 					controls.noRotate = true;
+					camera.position.z = 0;
+					camera.position.x = 0;
+					//make every mouse/trackpad/scroll interaction a pan-trigger
 
-					//make every interaction a mouse movement
-					
 		        }
 		        else if(camera.position.y > 150){
 		        	//Then initiate the orbiting controls
 		        	controls.noRotate = false;
 
 		        	//confine sesame to one place, there should be no way to move it elsewhere
-		        	camera.position.y = 160;
+		        	sesameStoneDae.position.y = 160;
 
 		        	//not orbit sesame
 		        	controls.target(sesameStone.position);
