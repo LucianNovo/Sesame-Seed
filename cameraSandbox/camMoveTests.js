@@ -98,9 +98,9 @@
         // startAnimation refers to user-initiated animations. The default animation must be removed if ongoing.
         // this.endAutomaticTravel();
         ss.cameraAnimating = false;
-        controls.enabled   = true;
         var destinationPoint = scene.getObjectById(zoomDestinationId);
         controls.target.set( destinationPoint.position.x,destinationPoint.position.y,destinationPoint.position.z);
+        controls.enabled   = true;
         console.log("End animation");
     }
 
