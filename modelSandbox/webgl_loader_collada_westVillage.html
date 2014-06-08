@@ -48,9 +48,9 @@
 
 			var colladaRef;
 
-			var loader = new THREE.ColladaLoader();
-			loader.options.convertUpAxis = true;
-			loader.load( 'collada/WestVillage_&comps_cleaned.dae', function ( collada ) {
+			var loader1 = new THREE.ColladaLoader();
+			loader1.options.convertUpAxis = true;
+			loader1.load( 'collada/WestVillage_&comps_cleaned.dae', function ( collada ) {
 
 				dae = collada.scene;
 				colladaRef = collada;
@@ -63,12 +63,14 @@
 				// animate();
 
 			} );
-			loader.load( 'collada/sesameStone.dae', function ( collada ) {
+			var loader2 = new THREE.ColladaLoader();
+			loader2.options.convertUpAxis = true;
+			loader2.load( 'collada/sesameStone.dae', function ( collada ) {
 
 				sesameStoneDae = collada.scene;
 				colladaRef = collada;
 
-				sesameStoneDae.scale.x = sesameStoneDae.scale.y = sesameStoneDae.scale.z = 0.05;
+				sesameStoneDae.scale.x = sesameStoneDae.scale.y = sesameStoneDae.scale.z = 4;
 				sesameStoneDae.position.z = 88;
 				sesameStoneDae.updateMatrix();
 
