@@ -91,13 +91,13 @@
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 
-				//the orbit center position
-				var VIEW_ANGLE = 45, ASPECT = window.innerWidth / window.innerHeight, NEAR = 0.1, FAR = 20000;
-				camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
-				scene.add(camera);
-				camera.position.set( 0, 1, 0 );
-
 				scene = new THREE.Scene();
+
+				//define and position the camera
+				var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+				camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+				camera.position.set( 0, 1, 0 );
+				scene.add(camera);
 
 				// Add the COLLADA
 				scene.add( dae );
