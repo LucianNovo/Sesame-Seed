@@ -154,7 +154,8 @@
 
 				// Add the controls
 				controls = new THREE.OrbitControls( camera );
-
+				controls.minDistance = 0;
+				controls.maxDistance = 200;
 			}
 
 			function onWindowResize() {
@@ -191,7 +192,7 @@
 					//don't glitch out by rotating
 					controls.noRotate = true;
 		        }
-		        else if((camera.position.y >= 80) && (camera.position.y <= 150)){
+		        else if((camera.position.y >= 80) && (camera.position.y <= 300)){
 		        	//Then look at the floating sesame
 		        	sesameStoneDae.position.y = camera.position.y;
 
@@ -202,6 +203,7 @@
 					controls.noRotate = true;
 					camera.position.z = 0;
 					camera.position.x = 0;
+					
 					//make every mouse/trackpad/scroll interaction a pan-trigger
 
 		        }
