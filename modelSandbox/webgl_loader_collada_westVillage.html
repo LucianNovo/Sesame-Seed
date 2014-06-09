@@ -51,6 +51,7 @@
 			var particleLight, pointLight;
 			var dae, skin, sesameStoneDae;
 			var directionalLight;
+			var transitionFirst;
 
 			var colladaRef;
 			var sesameStoneRef;
@@ -216,6 +217,13 @@
 
 		        	//now orbit sesame
 		        	controls.target.set(sesameStoneDae.position.x,sesameStoneDae.position.y,sesameStoneDae.position.z);
+		        	if(transitionFirst == true){
+		        		//re-orient the view
+		        		camera.up.set(0, 0.93, 0.36);
+
+		        		//Last time this ever happens. 
+		        		transitionFirst = false;
+		        	}
 		        }
 		        else{
 		        	///then look at sesame
