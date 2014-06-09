@@ -92,7 +92,9 @@
 				document.body.appendChild( container );
 
 				//the orbit center position
-				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+				var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 5500;
+				camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+				scene.add(camera);
 				camera.position.set( 0, 1, 0 );
 
 				scene = new THREE.Scene();
@@ -139,24 +141,26 @@
 				controls.minDistance = 0;
 				controls.maxDistance = 150;
 
-					// axes
-					var axes = new THREE.AxisHelper(100);
-					scene.add( axes );
-					
-					var imagePrefix = "images/darkSky_";
-					var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
-					var imageSuffix = ".jpg";
-					var skyGeometry = new THREE.CubeGeometry( 5000, 5000, 5000 );	
-					
-					var materialArray = [];
-					for (var i = 0; i < 6; i++)
-						materialArray.push( new THREE.MeshBasicMaterial({
-							map: THREE.ImageUtils.loadTexture( imagePrefix + directions[i] + imageSuffix ),
-							side: THREE.BackSide
-						}));
-					var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
-					var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
-					scene.add( skyBox );
+				// // axes
+				// var axes = new THREE.AxisHelper(100);
+				// scene.add( axes );
+
+				// Add a skybox				
+				var imagePrefix = "images/darkSky_";
+				var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+				var imageSuffix = ".jpg";
+				var skyGeometry = new THREE.CubeGeometry( 5000, 5000, 5000 );	
+				
+				var materialArray = [];
+				for (var i = 0; i < 6; i++)
+					materialArray.push( new THREE.MeshBasicMaterial({
+						map: THREE.ImageUtils.loadTexture( imagePrefix + directions[i] + imageSuffix ),
+						side: THREE.BackSide
+					}));
+				var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
+				var skyBox  = new THREE.Mesh(skyGeometry, skyMaterial );
+				skyBox.name = "skyBox";
+				scene.add( skyBox );
 
 
 			}
@@ -182,7 +186,7 @@
 
 			function loop(){
 		        //set the transparency of the mesh
-		        var meshMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, transparent: true, opacity: (.75/camera.position.y) } );
+		        var meshMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, transparent: true, opacity: (.99/camera.position.y) } );
 		        setMaterial(dae, meshMaterial);
 				//set the height of the sesame stone and camera
 		        if(camera.position.y <= 80){
