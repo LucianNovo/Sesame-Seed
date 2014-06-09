@@ -4,7 +4,6 @@
     var cycles = [ .7, .75, .80, .85, .90, .95, 1.0, 1.05, 1.1, 1.15, 1.20, 1.25];
     var speed;
     var rotation = 1;
-    var solorSystemInited = false;
     var ss = {
       "angle": 90, 
       "angleIncrement":0.0, 
@@ -95,12 +94,12 @@
     controls = new THREE.OrbitControls( camera );
     controls.addEventListener( 'change', render );
 
-    // var scene = new THREE.Scene();
-    // var cube  = new THREE.Mesh(
-    //   new THREE.CubeGeometry(30,30,30),
-    //   new THREE.MeshBasicMaterial({color: 0xCCCCCC, opacity: 1})
-    // );
-    // scene.add(cube);
+    var scene = new THREE.Scene();
+    var cube  = new THREE.Mesh(
+      new THREE.CubeGeometry(30,30,30),
+      new THREE.MeshBasicMaterial({color: 0xCCCCCC, opacity: 1})
+    );
+    scene.add(cube);
     renderer.render(scene, camera);
 
     // Creating the light
@@ -317,7 +316,7 @@
         paused = (ev.date == 'pause');
       };
 
-      function updateSS(){
+      function loop(){
         if(ss.angleIncrement > 0){
           ss.angle += ss.angleIncrement;
 
@@ -332,9 +331,8 @@
 
             //Give each central planet a color
             clusters[c].clusterPlanets[0].sphere.material.color.setRGB(1,0,0); 
-
             //update orbit around universal center (0,0,0)
-            planetRef.outline.position.y = planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative + sesameStoneDae.position.y;
+            planetRef.outline.position.y = planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
             planetRef.outline.position.x = planetRef.sphere.position.x = (ss.clusterAmplitude ) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;
             planetRef.outline.position.z = planetRef.sphere.position.z = (ss.clusterAmplitude ) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;         
 
@@ -403,10 +401,13 @@
         */
       }
 
-      function initSolarSystem(){
+      init();
+      function init(){
 
         createPlanets();
+
         projector = new THREE.Projector();
+
         document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 
 
@@ -422,7 +423,7 @@
           }
         }
 
-        solorSystemInited = true;
+        setInterval(loop, 1000/60);
       }
 
       //make clusters of a certain size
