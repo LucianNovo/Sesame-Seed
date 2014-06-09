@@ -92,7 +92,7 @@
 				document.body.appendChild( container );
 
 				//the orbit center position
-				var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 5500;
+				var VIEW_ANGLE = 45, ASPECT = window.innerWidth / window.innerHeight, NEAR = 0.1, FAR = 20000;
 				camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
 				scene.add(camera);
 				camera.position.set( 0, 1, 0 );
