@@ -187,12 +187,12 @@
 		        	sesameStoneDae.position.y = camera.position.y * .9;
 		        	camera.lookAt(centerSesame);
 					camera.position.z = 0;
-					camera.position.x = 0;					
+					camera.position.x = 0;
 
 					//don't glitch out by rotating
 					controls.noRotate = true;
 		        }
-		        else if((camera.position.y >= 80) && (camera.position.y <= 300)){
+		        else if((camera.position.y >= 80) && (camera.position.y <= 500)){
 		        	//Then look at the floating sesame
 		        	sesameStoneDae.position.y = camera.position.y;
 
@@ -207,18 +207,15 @@
 					//make every mouse/trackpad/scroll interaction a pan-trigger
 
 		        }
-		        else if(camera.position.y > 300){
+		        else if(camera.position.y > 500){
 		        	//Then initiate the orbiting controls
-		        	controls.noRotate    = false;
-		        	controls.maxDistance = 150; 
+		        	controls.noRotate = false;
 
 		        	//confine sesame to one place, there should be no way to move it elsewhere
 		        	sesameStoneDae.position.y = 500;
 
 		        	//not orbit sesame
-		        	if(sesameStoneDae.position != controls.target){
-			        	controls.target.set(sesameStoneDae.position.x,sesameStoneDae.position.y,sesameStoneDae.position.z);
-			        }
+		        	controls.target.set(sesameStoneDae.position.x,sesameStoneDae.position.y,sesameStoneDae.position.z);
 		        }
 		        else{
 		        	///then look at sesame
