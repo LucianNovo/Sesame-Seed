@@ -103,18 +103,6 @@
 				scene.add( dae );
 				scene.add( sesameStoneDae );
 
-				// //Create the camera line
-				// cameraLine = new THREE.Geometry();
-			 //    cameraLine.vertices.push(new THREE.Vector3(centerSesame));
-			 //    cameraLine.vertices.push(new THREE.Vector3(20, 40, 0));
-			 //    cameraLine.vertices.push(new THREE.Vector3(0, 0, 0));    
-
-			 //    var lineMaterial = new THREE.LineBasicMaterial({
-			 //        color: 0x0000ff
-			 //    });
-			 //    var line = new THREE.Line(cameraLine, lineMaterial);
-			 //    scene.add(line); 
-
 				// Lights
 				var light = new THREE.AmbientLight( 0x404040 );
 				scene.add(light);
@@ -223,7 +211,12 @@
 
 		        	//now orbit sesame
 		        	controls.target.set(sesameStoneDae.position.x,sesameStoneDae.position.y,sesameStoneDae.position.z);
-		        	if(transitionFirst){
+
+		        	//update the Solar System
+		        	if(solarSystemIntited){
+			        	updateSS();
+				    }
+		        	else if(transitionFirst){
 		        		//re-orient the view
 		        		camera.up.set(0, 0.93, 0);
 		        		camera.position.y = 400;
@@ -234,6 +227,9 @@
 		        		// code to center the camera on a specific object
 		        		// var height = 20; 
 		        		// var dist   = height / 2 / Math.tan(Math.PI * camera.fov / 360);
+
+		        		//initialize the solar System
+		        		initSolarSystem();
 
 		        		//Last time this ever happens. 
 		        		transitionFirst = false;
