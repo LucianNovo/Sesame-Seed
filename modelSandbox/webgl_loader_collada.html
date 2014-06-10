@@ -48,18 +48,33 @@
 
 			var loader = new THREE.ColladaLoader();
 			loader.options.convertUpAxis = true;
-			loader.load( 'collada/buildingTest/test4_centered_exploded.dae', function ( collada ) {
+			loader.addEventListener( 'load', function ( event ) {
+		        objects = event.content;
 
-				dae.scale.x = dae.scale.y = dae.scale.z = 0.05;
-				dae.updateMatrix();
+		        objects.position.set(0,5,0);
+		        objects.scale.set(0.05,0.05,0.05);
+		        objects.updateMatrix();
 
-			    var mesh = new THREE.Mesh(collada, new THREE.MeshBasicMaterial());
-			    mesh.doublesided = true;
-			    scene.add(mesh);
+		        objects.mesh.doubleSided = true;
+		        scene.add(objects);
 
 				init();
 				animate();
-			} );
+		    });
+
+			// loader.load( 'collada/buildingTest/test4_centered_exploded.dae', function ( collada ) {
+
+			// 	dae = collada.scene;
+
+			// 	dae.scale.x = dae.scale.y = dae.scale.z = 0.05;
+			// 	dae.updateMatrix();
+
+			// 	if( node.material ) {
+			//         node.material.side = THREE.DoubleSide;
+			//     }
+			// 	init();
+			// 	animate();
+			// } );
 
 			function init() {
 				//container
