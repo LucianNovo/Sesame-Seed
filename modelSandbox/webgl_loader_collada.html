@@ -65,6 +65,10 @@
 
 				dae = collada.scene;
 
+				var material = new THREE.MeshLambertMaterial();
+
+				var mesh = new THREE.Mesh( dae.geometry, material );
+
 				dae.traverse( function( node ) {
 				    if( node.material ) { 
 				    	console.log("node found");
@@ -75,6 +79,8 @@
 
 				dae.scale.x = dae.scale.y = dae.scale.z = 0.05;
 				dae.updateMatrix();
+
+				scene.add( mesh );
 
 				init();
 				animate();
