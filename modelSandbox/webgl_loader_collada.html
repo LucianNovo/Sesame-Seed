@@ -41,7 +41,7 @@
 
 			var container, stats;
 
-			var camera, scene, renderer, objects, centerSesame, cameraLine;
+			var camera, scene, renderer, objects, centerSesame, cameraLine, meshDAE, materialDAE;
 			var particleLight, pointLight;
 			var dae, skin;
 			var directionalLight;
@@ -65,9 +65,9 @@
 
 				dae = collada.scene;
 
-				var material = new THREE.MeshLambertMaterial();
+				materialDAE = new THREE.MeshLambertMaterial();
 
-				var mesh = new THREE.Mesh( dae.geometry, material );
+				meshDAE = new THREE.Mesh( dae.geometry, material );
 
 				dae.traverse( function( node ) {
 				    if( node.material ) { 
@@ -79,8 +79,6 @@
 
 				dae.scale.x = dae.scale.y = dae.scale.z = 0.05;
 				dae.updateMatrix();
-
-				scene.add( mesh );
 
 				init();
 				animate();
@@ -115,6 +113,7 @@
 				scene.add( line );
 
 				// Add the COLLADA
+				scene.add( meshDAE );
 				scene.add( dae );
 
 				//Create the camera line
