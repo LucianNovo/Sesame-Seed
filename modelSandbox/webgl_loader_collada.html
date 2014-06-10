@@ -50,14 +50,15 @@
 			loader.options.convertUpAxis = true;
 			loader.load( 'collada/buildingTest/test4_centered_exploded.dae', function ( collada ) {
 
-				dae = collada.scene;
-
 				dae.scale.x = dae.scale.y = dae.scale.z = 0.05;
 				dae.updateMatrix();
 
+			    var mesh = new THREE.Mesh(collada, new THREE.MeshBasicMaterial());
+			    mesh.doublesided = true;
+			    scene.add(mesh);
+
 				init();
 				animate();
-
 			} );
 
 			function init() {
