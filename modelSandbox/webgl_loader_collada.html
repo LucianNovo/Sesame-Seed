@@ -48,7 +48,7 @@
 
 			var loader = new THREE.ColladaLoader();
 			loader.options.convertUpAxis = true;
-			loader.load( 'collada/buildingTest/test2_exploded.dae', function ( collada ) {
+			loader.load( 'collada/buildingTest/`test2_exploded.dae', function ( collada ) {
 
 				dae = collada.scene;
 
@@ -144,18 +144,9 @@
 			function loop(){
 		        //Renderer Animation managment
 		        renderer.clear();
-		        camera.lookAt(centerSesame);
-		        camera.position.z = 0;
-		        camera.position.x = 0;
 		        renderer.render(scene,camera);
 			}
 
-			function render() {
-				camera.lookAt(centerSesame);
-				camera.position.z = 0;
-				camera.position.x = 0;
-				renderer.render( scene, camera );
-			}
 		</script>
 	</body>
 </html>
