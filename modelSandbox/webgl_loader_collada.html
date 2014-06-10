@@ -48,12 +48,11 @@
 
 			var loader = new THREE.ColladaLoader();
 			loader.options.convertUpAxis = true;
-			loader.load( 'collada/buildingTest/test2_exploded.dae', function ( collada ) {
+			loader.load( 'collada/buildingTest/HartTestModel.dae', function ( collada ) {
 
 				dae = collada.scene;
 
 				dae.scale.x = dae.scale.y = dae.scale.z = 0.05;
-				dae.position.z = 88;
 				dae.updateMatrix();
 
 				init();
