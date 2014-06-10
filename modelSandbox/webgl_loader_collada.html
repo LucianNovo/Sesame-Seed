@@ -67,7 +67,7 @@
 
 				materialDAE = new THREE.MeshLambertMaterial();
 
-				meshDAE = new THREE.Mesh( dae.geometry, material );
+				meshDAE = new THREE.Mesh( dae.geometry, materialDAE );
 
 				dae.traverse( function( node ) {
 				    if( node.material ) { 
