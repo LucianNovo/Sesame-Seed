@@ -6,7 +6,7 @@
     var rotation = 1;
     var ss = {
       "angle": 90, 
-      "angleIncrement":0.0, 
+      "angleIncrement":0.001, 
       "clusterAmplitude": 50, 
       "planetAmplitude": 1, 
       "amplitude": 3, 
@@ -112,7 +112,7 @@
         lineVerts=[]; // reference from global
         var geometry;
         for(var i=0; i<PLANET_COUNT; i++){
-          
+
           geometry = new THREE.SphereGeometry( sizes[Math.floor(Math.random() * sizes.length)], 8, 8 );
           var material   = new THREE.MeshBasicMaterial( {color: Number(kuler[Math.floor(Math.random() * kuler.length)])});
           spheres[i]     = new THREE.Mesh( geometry, material );
@@ -259,6 +259,7 @@
       }
 
       function addLines(meshRef){
+        removeOutline(meshRef);
         var c=0;
         loop1:
         for(;c<clusters.length;c++){
@@ -364,11 +365,11 @@
         if ( intersects.length > 0 ) {
           //change color of planet to white
           console.log(intersects[0].object.id);
-          intersects[ 0 ].object.material.color.setHex(0xffffff);
+          // intersects[ 0 ].object.material.color.setHex(0xffffff);
           // console.log(intersects[ 0 ].object);
-          addOutline(intersects[0].object.uuid);
+          // addOutline(intersects[0].object.uuid);
 
-          zoomAndDollyToPoint(camera, intersects[0].object.id, function(){console.log("Done")}); 
+          // zoomAndDollyToPoint(camera, intersects[0].object.id, function(){console.log("Done")}); 
 
           //remove all other outlines, add outline to this one
           removeOutline(intersects[0].object.uuid);
