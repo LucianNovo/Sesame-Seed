@@ -93,11 +93,11 @@
     controls.maxDistance = 250;
 
     var scene = new THREE.Scene();
-    // var cube  = new THREE.Mesh(
-    //   new THREE.CubeGeometry(20,30,20),
-    //   new THREE.MeshBasicMaterial({color: 0xCCCCCC, opacity: 1})
-    // );
-    // scene.add(cube);
+    var cube  = new THREE.Mesh(
+      new THREE.CubeGeometry(20,30,20),
+      new THREE.MeshBasicMaterial({color: 0xCCCCCC, opacity: 1})
+    );
+    scene.add(cube);
     renderer.render(scene, camera);
 
     // Creating the light
@@ -106,6 +106,7 @@
     scene.add( dirLight );
 
     dirLight.color.setHSL( 0.1, 0.7, 0.5 );
+
 
     var RADIUS = 30;
     var relatives = [1, -1];
@@ -144,6 +145,9 @@
         for(var i=0; i<PLANET_COUNT; i++){
 
           geometry = new THREE.SphereGeometry( sizes[Math.floor(Math.random() * sizes.length)], 8, 8 );
+          geometry.dynamic = true;
+          geometry.normalsNeedUpdate = true; 
+          geometry.verticesNeedUpdate = true;
           var material   = new THREE.MeshBasicMaterial( {color: Number(kuler[Math.floor(Math.random() * kuler.length)])});
           spheres[i]     = new THREE.Mesh( geometry, material );
 
@@ -323,6 +327,43 @@
         paused = (ev.date == 'pause');
       };
 
+      // function recolor(){
+
+      //     //local variable for efficiency's sake
+      //     var clusterRef;
+      //     var planetRef;
+
+      //     //Update every planet(p) of every cluster(c) 
+      //     for(var c=0; c < clusters.length; c++){
+      //       clusterRef = clusters[c];
+      //       planetRef  = clusters[c].clusterPlanets[0];
+
+      //       //Give each central planet a color
+      //       clusters[c].clusterPlanets[0].sphere.geometry.scale.x = 2;
+      //       clusters[c].clusterPlanets[0].sphere.geometry.scale.y = 2;
+      //       clusters[c].clusterPlanets[0].sphere.geometry.scale.z = 2;
+      //       //update orbit around universal center (0,0,0)
+      //       planetRef.outline.position.y = planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
+      //       planetRef.outline.position.x = planetRef.sphere.position.x = (ss.clusterAmplitude ) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;
+      //       planetRef.outline.position.z = planetRef.sphere.position.z = (ss.clusterAmplitude ) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;         
+
+      //       //iterate through every every planet of every cluster
+      //       for(var p=1; p < clusters[c].clusterPlanets.length; p++){
+      //         planetRef = clusterRef.clusterPlanets[p];
+
+      //         planetRef.material = new THREE.MeshBasicMaterial( { color: 0xffaa00, transparent: true, blending: THREE.AdditiveBlending, opacity: .2 } );
+      //         planetRef.material = new THREE.MeshBasicMaterial( { color: 0xffaa00, transparent: true, blending: THREE.AdditiveBlending, opacity: .2 } );
+      //         // udpate x,y and z around central orbit
+      //         // planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
+      //         planetRef.outline.position.y = planetRef.sphere.position.y = clusterRef.clusterPlanets[0].sphere.position.y;
+      //         planetRef.outline.position.x = planetRef.sphere.position.x = (planetRef.planetAmplitude + (planetRef.planetAmplitude * ss.planetAmplitude)) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.x;
+      //         planetRef.outline.position.z = planetRef.sphere.position.z = (planetRef.planetAmplitude + (planetRef.planetAmplitude * ss.planetAmplitude)) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.z;
+            
+            
+      //       }
+      //     }
+      // }
+
       function loop(){
         if(ss.angleIncrement > 0){
           ss.angle += ss.angleIncrement;
@@ -353,11 +394,7 @@
               planetRef.outline.position.x = planetRef.sphere.position.x = (planetRef.planetAmplitude + (planetRef.planetAmplitude * ss.planetAmplitude)) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.x;
               planetRef.outline.position.z = planetRef.sphere.position.z = (planetRef.planetAmplitude + (planetRef.planetAmplitude * ss.planetAmplitude)) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.z;
             
-              // //change the intra-cluster network
-              // clusterRef.lineStack[p].geometry.dynamic = true;
-              // clusterRef.lineStack[p].geometry.vertices[0].set(clusterRef.clusterPlanets[0].sphere.position.x,clusterRef.clusterPlanets[0].sphere.position.y,clusterRef.clusterPlanets[0].sphere.position.z);
-              // clusterRef.lineStack[p].geometry.vertices[1].set(planetRef.sphere.position.x,planetRef.sphere.position.y,planetRef.sphere.position.z);
-              // clusterRef.lineStack[p].geometry.verticesNeedUpdate = true;
+
             }
           }
           //Renderer Animation managment
