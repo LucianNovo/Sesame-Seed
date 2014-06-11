@@ -73,7 +73,6 @@
     var renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
     renderer.setSize(document.body.clientWidth, document.body.clientHeight);
     document.body.appendChild(renderer.domElement);
-    // renderer.setClearColorHex(0xFFFFFF, 1.0);
     renderer.setClearColor( 0x0000000, 1);
     renderer.clear();
 
