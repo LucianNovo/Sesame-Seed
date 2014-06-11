@@ -55,6 +55,14 @@
 		    var clusters = [];
 			var cluster_count = 3;
 
+		    function cluster(cluster_ID){
+		      this.cluster_ID     = cluster_ID;
+		      this.name           = "untitled";
+		      this.clusterPlanets = [];
+		      this.lineMaterial   = new THREE.LineBasicMaterial({color: 0xFFFFFF});//white line material
+		      this.lineStack      = [];
+		    };
+
 		    var RADIUS = 30;
 		    var relatives = [1, -1];
 		    var sizes  = [2,2.5,3,4,5];
@@ -82,6 +90,23 @@
 		      "zShift": 0, 
 		      "horizontalShift": 0,
 		    };
+
+		    ss.Settings = {
+		      // categories: ["living", "outside", "workshop", "food", "technology", "play"],
+		      viewThreshold: 18000,
+		      maxIblesPerAuthor: 30,
+		      width: document.body.clientWidth,
+		      height: document.body.clientHeight,
+		      cameraDefaultPosition: new THREE.Vector3( 222.3842933874708, 388.94164021652136, 224.33347974950735),
+		      cameraDefaultTarget: new THREE.Vector3(0, 0, 0),
+		      cameraDefaultUp: (new THREE.Vector3(0, 0.93, 0.36)).normalize(),
+		      cameraDefaultFOV: 45
+		    };
+
+		    ss.Status = {
+		      cameraAnimating: false,
+		      firstClick: false,
+		    }
 
 		    function createPlanets(){
 		        planets = []; // reference from global
