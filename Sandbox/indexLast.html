@@ -59,7 +59,7 @@
 		    var relatives = [1, -1];
 		    var sizes  = [2,2.5,3,4,5];
 		    var kuler  = ["0x14A697", "0xF2C12E", "0xF29D35", "0xF27649", "0xF25252"];
-		    
+
 			var orbitSettings = {
 				disableRotate : true,
 				panMode : true
@@ -211,6 +211,14 @@
 	      }
 
 			function init() {
+				//define and position the camera
+				var VIEW_ANGLE = 45, ASPECT = window.innerWidth / window.innerHeight, NEAR = 0.1, FAR = 20000;
+				camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+				camera.position.set( 0, 1, 0 );
+				scene.add(camera);
+
+				// Add the COLLADA
+				scene.add( sesameStoneDae );
 
 				//generate the planets
 				createPlanets();
@@ -224,15 +232,6 @@
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 				scene = new THREE.Scene();
-
-				//define and position the camera
-				var VIEW_ANGLE = 45, ASPECT = window.innerWidth / window.innerHeight, NEAR = 0.1, FAR = 20000;
-				camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
-				camera.position.set( 0, 1, 0 );
-				scene.add(camera);
-
-				// Add the COLLADA
-				scene.add( sesameStoneDae );
 
 				// Lights
 				var light = new THREE.AmbientLight( 0x404040 );
