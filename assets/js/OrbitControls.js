@@ -28,8 +28,6 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	// API
 
-
-
 	// Set to false to disable this control
 	this.enabled = true;
 

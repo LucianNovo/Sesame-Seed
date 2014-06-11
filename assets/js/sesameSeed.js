@@ -83,6 +83,8 @@
     //Controls for user navigation.
     controls = new THREE.OrbitControls( camera );
     controls.addEventListener( 'change', render );
+    controls.minDistance = 20;
+    controls.maxDistance = 150;
 
     var scene = new THREE.Scene();
     var cube  = new THREE.Mesh(
@@ -103,8 +105,6 @@
     var relatives = [1, -1];
     var sizes  = [2,2.5,3,4,5];
     var kuler  = ["0x14A697", "0xF2C12E", "0xF29D35", "0xF27649", "0xF25252"];
-    // 00A388 79BD8F BEEB9F FFFF9D FF6138 FFFF9D BEEB9F", "79BD8F", "00A388"]
-    // var kuler = ["0x32450C", "0x717400", "0xDC8505", "0xEC5519", "0xBE2805"];
 
     function createPlanets(){
         planets = []; // reference from global
