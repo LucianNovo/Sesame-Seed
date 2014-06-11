@@ -46,6 +46,9 @@
     function planet(){};
     var PLANET_COUNT = 12;
 
+    //sesame
+    var sesameStone;
+
     //
     imageNumbers = [1,2,3];
 
@@ -90,11 +93,11 @@
     controls.maxDistance = 250;
 
     var scene = new THREE.Scene();
-    var cube  = new THREE.Mesh(
-      new THREE.CubeGeometry(20,30,20),
-      new THREE.MeshBasicMaterial({color: 0xCCCCCC, opacity: 1})
-    );
-    scene.add(cube);
+    // var cube  = new THREE.Mesh(
+    //   new THREE.CubeGeometry(20,30,20),
+    //   new THREE.MeshBasicMaterial({color: 0xCCCCCC, opacity: 1})
+    // );
+    // scene.add(cube);
     renderer.render(scene, camera);
 
     // Creating the light
@@ -126,7 +129,6 @@
               node.material.opacity = 1;
           }
       });
-      scene.add(sesameStoneMesh);
       sesameStoneMesh.position.x = 0; 
       sesameStoneMesh.position.y = 0; 
       sesameStoneMesh.position.z = 0; 
@@ -414,6 +416,7 @@
         createPlanets();
 
         projector = new THREE.Projector();
+        scene.add(sesameStoneMesh);
 
         document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 
