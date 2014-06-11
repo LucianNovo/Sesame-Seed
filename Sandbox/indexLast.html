@@ -30,16 +30,11 @@
 		<script src="../assets/js/three.min.js"></script>
 		<!--<script src="../cameraSandbox/camMoveTests.js"></script>-->
 		<script src="../modelSandbox/js/loaders/ColladaLoader.js"></script>
-		<script type="text/javascript">
-			var orbitSettings = {
-				disableRotate : true,
-				panMode : true
-			}
-		</script>
 		<script src="../assets/js/TweenMax.js"></script>
 		<script src="../assets/js/OrbitControls.js"></script>
   		<script src="../cameraSandbox/cameraSettings.js"></script>
 		<script>
+
 			var container, stats;
 
 			var camera, scene, renderer, objects, centerSesame = new THREE.Vector3(0,0,0), cameraLine;
@@ -64,7 +59,29 @@
 		    var relatives = [1, -1];
 		    var sizes  = [2,2.5,3,4,5];
 		    var kuler  = ["0x14A697", "0xF2C12E", "0xF29D35", "0xF27649", "0xF25252"];
-
+		    
+			var orbitSettings = {
+				disableRotate : true,
+				panMode : true
+			}
+		    var spheres, lines;
+		    var speeds = [ .15,.25, .35, .4, .5, .6, .75, .85, 1, 1.15, 1.25, 1.5];
+		    var cycles = [ .7, .75, .80, .85, .90, .95, 1.0, 1.05, 1.1, 1.15, 1.20, 1.25];
+		    var speed;
+		    var rotation = 1;
+		    var ss = {
+		      "angle": 90, 
+		      "angleIncrement":0.0, 
+		      "clusterAmplitude": 50, 
+		      "planetAmplitude": 1, 
+		      "amplitude": 3, 
+		      "cycles":1,
+		      "period":1,
+		      "verticalShift": 0, 
+		      "xShift": 0,
+		      "zShift": 0, 
+		      "horizontalShift": 0,
+		    };
 
 		    function createPlanets(){
 		        planets = []; // reference from global
@@ -269,9 +286,48 @@
 				setInterval(loop, 1000/60);
 			}
 
-			function loop(){
-		        renderer.render(scene,camera);
-			}
+      function loop(){
+        if(ss.angleIncrement > 0){
+          ss.angle += ss.angleIncrement;
+
+          //local variable for efficiency's sake
+          var clusterRef;
+          var planetRef;
+
+          //Update every planet(p) of every cluster(c) 
+          for(var c=0; c < clusters.length; c++){
+            clusterRef = clusters[c];
+            planetRef  = clusters[c].clusterPlanets[0];
+
+            //Give each central planet a color
+            clusters[c].clusterPlanets[0].sphere.material.color.setRGB(1,0,0); 
+            //update orbit around universal center (0,0,0)
+            planetRef.outline.position.y = planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
+            planetRef.outline.position.x = planetRef.sphere.position.x = (ss.clusterAmplitude ) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;
+            planetRef.outline.position.z = planetRef.sphere.position.z = (ss.clusterAmplitude ) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift;         
+
+            //iterate through every every planet of every cluster
+            for(var p=1; p < clusters[c].clusterPlanets.length; p++){
+              planetRef = clusterRef.clusterPlanets[p];
+
+              // udpate x,y and z around central orbit
+              // planetRef.sphere.position.y = (60-Math.sin(ss.angle)) * planetRef.random + sizes[0] * planetRef.relative;
+              planetRef.outline.position.y = planetRef.sphere.position.y = clusterRef.clusterPlanets[0].sphere.position.y;
+              planetRef.outline.position.x = planetRef.sphere.position.x = (planetRef.planetAmplitude + (planetRef.planetAmplitude * ss.planetAmplitude)) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.x;
+              planetRef.outline.position.z = planetRef.sphere.position.z = (planetRef.planetAmplitude + (planetRef.planetAmplitude * ss.planetAmplitude)) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.z;
+            
+              //change the intra-cluster network
+              clusterRef.lineStack[p].geometry.dynamic = true;
+              clusterRef.lineStack[p].geometry.vertices[0].set(clusterRef.clusterPlanets[0].sphere.position.x,clusterRef.clusterPlanets[0].sphere.position.y,clusterRef.clusterPlanets[0].sphere.position.z);
+              clusterRef.lineStack[p].geometry.vertices[1].set(planetRef.sphere.position.x,planetRef.sphere.position.y,planetRef.sphere.position.z);
+              clusterRef.lineStack[p].geometry.verticesNeedUpdate = true;
+            }
+          }
+          //Renderer Animation managment
+          renderer.clear();
+          renderer.render(scene,camera);
+        }
+      }
 
 		</script>
 	</body>
