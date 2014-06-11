@@ -102,7 +102,7 @@
 
     // Creating the light
     var dirLight = new THREE.DirectionalLight( 0xffffff, 0.125 );
-    dirLight.position.set( 0, -1, 0 ).normalize();
+    dirLight.position.set( 0, 30, 0 ).normalize();
     scene.add( dirLight );
 
     dirLight.color.setHSL( 0.1, 0.7, 0.5 );
@@ -118,7 +118,8 @@
 
       sesameStone = collada.scene;
 
-      sesameStoneMat = new THREE.MeshPhongMaterial({ ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading });
+      // sesameStoneMat = new THREE.MeshPhongMaterial({ ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading });
+      sesameStoneMat = new THREE.MeshLambertMaterial();
 
       sesameStoneMesh = new THREE.Mesh( sesameStone.geometry, sesameStoneMat );
 
