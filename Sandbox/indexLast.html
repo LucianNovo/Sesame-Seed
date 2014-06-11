@@ -211,27 +211,28 @@
 	      }
 
 			function init() {
+
+				//container
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+				scene = new THREE.Scene();
+
 				//define and position the camera
 				var VIEW_ANGLE = 45, ASPECT = window.innerWidth / window.innerHeight, NEAR = 0.1, FAR = 20000;
 				camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
 				camera.position.set( 0, 1, 0 );
 				scene.add(camera);
 
-				// Add the COLLADA
-				scene.add( sesameStoneDae );
-
 				//generate the planets
 				createPlanets();
+
+				// Add the COLLADA
+				scene.add( sesameStoneDae );
 
 				//projector for clicking elements
 		        projector = new THREE.Projector();
 		        //how to respond to mouse events
 		        document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-
-				//container
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
-				scene = new THREE.Scene();
 
 				// Lights
 				var light = new THREE.AmbientLight( 0x404040 );
