@@ -78,56 +78,55 @@
 
 				meshFreeborn.scale.x = meshFreeborn.scale.y = meshFreeborn.scale.z = 0.05;
 				meshFreeborn.updateMatrix();
+			var loader2 = new THREE.ColladaLoader();
+					loader2.options.convertUpAxis = true;
+					loader2.load( 'collada/buildingsSpaceships/dae/SocialSciences.dae', function ( collada ) {
 
+						meshSocsci = collada.scene;
+
+						matSocsci = new THREE.MeshPhongMaterial({ ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading });
+
+						meshDAE = new THREE.Mesh( meshSocsci.geometry, matSocsci );
+
+						meshSocsci.traverse( function( node ) {
+						    if( node.material ) { 
+						    	console.log("node found");
+						        node.material.side = THREE.DoubleSide;
+						        node.material.opacity = 1;
+						    }
+						});
+
+						meshSocsci.scale.x = meshSocsci.scale.y = meshSocsci.scale.z = 0.05;
+						meshSocsci.updateMatrix();
+
+							var loader3 = new THREE.ColladaLoader();
+							loader3.options.convertUpAxis = true;
+							loader3.load( 'collada/buildingsSpaceships/dae/Silo.dae', function ( collada ) {
+
+								meshSilo = collada.scene;
+
+								matSilo = new THREE.MeshPhongMaterial({ ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading });
+
+								meshSilo = new THREE.Mesh( meshSilo.geometry, matSilo);
+
+								meshSocsci.traverse( function( node ) {
+								    if( node.material ) { 
+								    	console.log("node found");
+								        node.material.side = THREE.DoubleSide;
+								        node.material.opacity = 1;
+								    }
+								});
+
+								meshSilo.scale.x = meshSilo.scale.y = meshSilo.scale.z = 0.05;
+								meshSilo.updateMatrix();
+
+								init();
+								animate();
+							} );
+					} );
 			});
 
 
-			var loader2 = new THREE.ColladaLoader();
-			loader2.options.convertUpAxis = true;
-			loader2.load( 'collada/buildingsSpaceships/dae/SocialSciences.dae', function ( collada ) {
-
-				meshSocsci = collada.scene;
-
-				matSocsci = new THREE.MeshPhongMaterial({ ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading });
-
-				meshDAE = new THREE.Mesh( meshSocsci.geometry, matSocsci );
-
-				meshSocsci.traverse( function( node ) {
-				    if( node.material ) { 
-				    	console.log("node found");
-				        node.material.side = THREE.DoubleSide;
-				        node.material.opacity = 1;
-				    }
-				});
-
-				meshSocsci.scale.x = meshSocsci.scale.y = meshSocsci.scale.z = 0.05;
-				meshSocsci.updateMatrix();
-			} );
-
-			var loader3 = new THREE.ColladaLoader();
-			loader3.options.convertUpAxis = true;
-			loader3.load( 'collada/buildingsSpaceships/dae/Silo.dae', function ( collada ) {
-
-				meshSilo = collada.scene;
-
-				matSilo = new THREE.MeshPhongMaterial({ ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading });
-
-				meshSilo = new THREE.Mesh( meshSilo.geometry, matSilo);
-
-				meshSocsci.traverse( function( node ) {
-				    if( node.material ) { 
-				    	console.log("node found");
-				        node.material.side = THREE.DoubleSide;
-				        node.material.opacity = 1;
-				    }
-				});
-
-				meshSilo.scale.x = meshSilo.scale.y = meshSilo.scale.z = 0.05;
-				meshSilo.updateMatrix();
-
-				init();
-				animate();
-			} );
 
 
 			// FFF = filename
