@@ -112,13 +112,8 @@
         lineVerts=[]; // reference from global
         var geometry;
         for(var i=0; i<PLANET_COUNT; i++){
-          if(i == 0 || i == 3 || i == 7 || i == 11){
-            geometry = new THREE.CubeGeometry(10,10,10);
-          }
-          else{
-            geometry = new THREE.SphereGeometry( sizes[Math.floor(Math.random() * sizes.length)], 8, 8 );
-          }
-
+          
+          geometry = new THREE.SphereGeometry( sizes[Math.floor(Math.random() * sizes.length)], 8, 8 );
           var material   = new THREE.MeshBasicMaterial( {color: Number(kuler[Math.floor(Math.random() * kuler.length)])});
           spheres[i]     = new THREE.Mesh( geometry, material );
 
