@@ -44,7 +44,7 @@
     //Planet Variables
     var planets;
     function planet(){};
-    var PLANET_COUNT = 40;
+    var PLANET_COUNT = 12;
 
     //Cluster Variables
     var clusters = [];
@@ -57,8 +57,8 @@
       this.lineStack      = [];
     }
 
-    var CLUSTER_MAX   = 8;
-    var cluster_count = Math.floor(Math.random() * CLUSTER_MAX + 2);
+    // var CLUSTER_MAX   = 8;
+    var cluster_count = 4;
 
     // Creating the cube
     var renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
