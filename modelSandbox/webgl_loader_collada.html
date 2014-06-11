@@ -41,24 +41,34 @@
 
 			var container, stats;
 
-			var camera, scene, renderer, objects, centerSesame, cameraLine, meshDAE, materialDAE;
+			//
+			var camera, scene, renderer, objects, centerScene, cameraLine;
+
+			//Variable meshes
+			var meshFreeborn, meshSocsci, meshSilo;
+			var matFreeborn, matSocsci, matSilo;
+
+			//test lights
 			var particleLight, pointLight;
+			
+			//testmesh variables
 			var daePhong, daeLambert, skin;
-			var directionalLight;
 
-			var loader = new THREE.ColladaLoader();
-			loader.options.convertUpAxis = true;
-
-			loader.load( 'collada/buildingsSpaceships/dae/Freeborn2.dae', function ( collada ) {
-
-				daePhong = collada.scene;
-
-				materialDAE = new THREE.MeshPhongMaterial({ ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading });
+			//directional lights
+			var directionalLight, directionalLight2;
 
 
-				meshDAE = new THREE.Mesh( daePhong.geometry, materialDAE );
+			var loader1 = new THREE.ColladaLoader();
+			loader1.options.convertUpAxis = true;
+			loader1.load( 'collada/buildingsSpaceships/dae/Freeborn.dae', function ( collada ) {
 
-				daePhong.traverse( function( node ) {
+				meshFreeborn = collada.scene;
+
+				matFreeborn = new THREE.MeshPhongMaterial({ ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading });
+
+				meshDAE = new THREE.Mesh( meshFreeborn.geometry, matFreeborn );
+
+				meshFreeborn.traverse( function( node ) {
 				    if( node.material ) { 
 				    	console.log("node found");
 				        node.material.side = THREE.DoubleSide;
@@ -66,25 +76,23 @@
 				    }
 				});
 
-				daePhong.scale.x = daePhong.scale.y = daePhong.scale.z = 0.05;
-				daePhong.updateMatrix();
+				meshFreeborn.scale.x = meshFreeborn.scale.y = meshFreeborn.scale.z = 0.05;
+				meshFreeborn.updateMatrix();
 
-				init();
-				animate();
-			} );
+			});
 
-			//Lambert Loader
+
 			var loader2 = new THREE.ColladaLoader();
 			loader2.options.convertUpAxis = true;
-			loader2.load( 'collada/buildingsSpaceships/dae/Freeborn2.dae', function ( collada ) {
+			loader2.load( 'collada/buildingsSpaceships/dae/SocSciences.dae', function ( collada ) {
 
-				daeLambert = collada.scene;
+				meshSocsci = collada.scene;
 
-				materialDAE = new THREE.MeshLambertMaterial();
+				matSocsci = new THREE.MeshPhongMaterial({ ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading });
 
-				meshDAE = new THREE.Mesh( daeLambert.geometry, materialDAE );
+				meshDAE = new THREE.Mesh( meshSocsci.geometry, matSocsci );
 
-				daeLambert.traverse( function( node ) {
+				meshSocsci.traverse( function( node ) {
 				    if( node.material ) { 
 				    	console.log("node found");
 				        node.material.side = THREE.DoubleSide;
@@ -92,13 +100,66 @@
 				    }
 				});
 
-				daeLambert.scale.x = daeLambert.scale.y = daeLambert.scale.z = 0.05;
-				daeLambert.position.x = 4;
-				daeLambert.updateMatrix();
+				meshSocsci.scale.x = meshSocsci.scale.y = meshSocsci.scale.z = 0.05;
+				meshSocsci.updateMatrix();
+			} );
+
+			var loader3 = new THREE.ColladaLoader();
+			loader3.options.convertUpAxis = true;
+			loader3.load( 'collada/buildingsSpaceships/dae/Silo.dae', function ( collada ) {
+
+				meshSilo = collada.scene;
+
+				matSilo = new THREE.MeshPhongMaterial({ ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading });
+
+				meshSilo = new THREE.Mesh( meshSilo.geometry, matSilo);
+
+				meshSocsci.traverse( function( node ) {
+				    if( node.material ) { 
+				    	console.log("node found");
+				        node.material.side = THREE.DoubleSide;
+				        node.material.opacity = 1;
+				    }
+				});
+
+				meshSilo.scale.x = meshSilo.scale.y = meshSilo.scale.z = 0.05;
+				meshSilo.updateMatrix();
 
 				init();
 				animate();
 			} );
+
+
+			// FFF = filename
+			// matFreeborn = material
+			// xxxGeo = geometry
+			// III    = iteration of loader
+			//
+
+			// var loaderIII = new THREE.ColladaLoader();
+			// loaderIII.options.convertUpAxis = true;
+			// loader.load( 'collada/buildingsSpaceships/dae/FFF.dae', function ( collada ) {
+
+			// 	xxxGeo = collada.scene;
+
+			// 	matFreeborn = new THREE.MeshPhongMaterial({ ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading });
+
+			// 	meshDAE = new THREE.Mesh( xxxGeo.geometry, matFreeborn );
+
+			// 	xxxGeo.traverse( function( node ) {
+			// 	    if( node.material ) { 
+			// 	    	console.log("node found");
+			// 	        node.material.side = THREE.DoubleSide;
+			// 	        node.material.opacity = 1;
+			// 	    }
+			// 	});
+
+			// 	xxxGeo.scale.x = xxxGeo.scale.y = xxxGeo.scale.z = 0.05;
+			// 	xxxGeo.updateMatrix();
+
+			// 	init();
+			// 	animate();
+			// } );
 
 
 			function init() {
@@ -130,22 +191,17 @@
 				scene.add( line );
 
 				// Add the COLLADA
-				scene.add( meshDAE );
-				scene.add( daeLambert );
-				scene.add( daePhong );
+				scene.add( meshSilo );
+				scene.add( meshFreeborn );
+				scene.add( meshSocsci );
 
-				//Create the camera line
-				centerSesame = new THREE.Vector3(80,0,0);
-				cameraLine = new THREE.Geometry();
-			    cameraLine.vertices.push(new THREE.Vector3(centerSesame));
-			    cameraLine.vertices.push(new THREE.Vector3(20, 40, 0));
-			    cameraLine.vertices.push(new THREE.Vector3(0, 0, 0));    
+				//positioning COLLADA files
+				meshSilo.position.set(3,0,0);
+				meshFreeborn.position.set(0,0,3);
+				meshSocsci.position.set(-3,0,0);
 
-			    var lineMaterial = new THREE.LineBasicMaterial({
-			        color: 0x0000ff
-			    });
-			    var line = new THREE.Line(cameraLine, lineMaterial);
-			    scene.add(line); 
+				//defining a global center
+				centerScene = new THREE.Vector3(0,0,0);
 
 				// Lights
 				var light = new THREE.AmbientLight( 0x404040 );
@@ -153,15 +209,12 @@
 
 				directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
 				directionalLight.position.set( 0, 30, 0 );
-				directionalLight.lookAt(daeLambert.position)
 				scene.add( directionalLight );
 
-				//Additional light to test front facing lighting
+				//Additional light that will accompany the camera
 				directionalLight2 = new THREE.DirectionalLight( 0xffffff, 0.5 );
-				directionalLight2.position.set( 0, 0, 5 );
-				directionalLight2.lookAt(daeLambert.position)
+				directionalLight2.position.set(camera.position.x,camera.position.y,camera.position.z);
 				scene.add( directionalLight2 );
-
 
 				renderer = new THREE.WebGLRenderer();
 				renderer.setSize( window.innerWidth, window.innerHeight );
@@ -193,6 +246,7 @@
 			function loop(){
 		        //Renderer Animation managment
 		        renderer.clear();
+				directionalLight2.position.set(camera.position.x,camera.position.y,camera.position.z);
 		        renderer.render(scene,camera);
 			}
 
