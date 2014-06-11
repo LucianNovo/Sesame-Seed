@@ -17,7 +17,7 @@ $("#info").hover(function(){
 function changeImg(imageNumber){
 	switch(imageNumber) {
 	    case 1:
-	        $("#info").attr("src","assets/imgs/mockups-09.png");
+	        $("#info").attr("src","../assets/imgs/mockups-09.png");
 	        $("#info").attr("display","block");
 	        break;
 	    case 2:
