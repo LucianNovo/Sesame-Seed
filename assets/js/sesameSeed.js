@@ -110,9 +110,15 @@
         planets = []; // reference from global
         spheres = []; // reference from global
         lineVerts=[]; // reference from global
+        var geometry;
         for(var i=0; i<PLANET_COUNT; i++){
-          //Sphere
-          var geometry   = new THREE.SphereGeometry( sizes[Math.floor(Math.random() * sizes.length)], 8, 8 );
+          if(i == 0 || i == 3 || i == 7 || i == 11){
+            geometry = new THREE.CubeGeometry(10,10,10);
+          }
+          else{
+            geometry = new THREE.SphereGeometry( sizes[Math.floor(Math.random() * sizes.length)], 8, 8 );
+          }
+
           var material   = new THREE.MeshBasicMaterial( {color: Number(kuler[Math.floor(Math.random() * kuler.length)])});
           spheres[i]     = new THREE.Mesh( geometry, material );
 
@@ -136,7 +142,7 @@
             sphereInitID: i,
             sphere:     spheres[i],
             sphereID:   spheres[i].id,
-            planetAmplitude : Math.floor(Math.random() * 20 + 5),
+            planetAmplitude : Math.floor(Math.random() * 5 + 5),
             outline:    outlineMesh1,
           }
           scene.add(planetSpawn.sphere);
@@ -155,23 +161,9 @@
           
           //for each size of each cluster
           for(cluster_iter = 0; ((cluster_iter < cluster_count) && (planet_inc < planets.length)); cluster_iter++){
+
             //add a planet to the iterated cluster
             clusters[cluster_inc].clusterPlanets[cluster_iter] = planets[planet_inc];
-            //add a line to the iterated planets
-
-            var material = new THREE.LineBasicMaterial({color: 0xffffff});
-            var geometry = new THREE.Geometry();
-            geometry.verticesNeedUpdate = true;
-            geometry.distancesNeedUpate = true;
-            geometry.dynamic = true;
-            geometry.vertices.push(new THREE.Vector3(0,0,0));
-            geometry.vertices.push(new THREE.Vector3(0,0,0));
-
-            var line = new THREE.Line(geometry, material);
-            // scene.add(line);
-
-            lineVerts.push(line);
-            clusters[cluster_inc].lineStack[cluster_iter] = line;
             planet_inc++;
           }
           cluster_inc++;
@@ -335,11 +327,11 @@
               planetRef.outline.position.x = planetRef.sphere.position.x = (planetRef.planetAmplitude + (planetRef.planetAmplitude * ss.planetAmplitude)) * Math.cos(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.x;
               planetRef.outline.position.z = planetRef.sphere.position.z = (planetRef.planetAmplitude + (planetRef.planetAmplitude * ss.planetAmplitude)) * Math.sin(planetRef.cycle*(ss.angle - ss.horizontalShift) * planetRef.speed) + ss.verticalShift + clusterRef.clusterPlanets[0].sphere.position.z;
             
-              //change the intra-cluster network
-              clusterRef.lineStack[p].geometry.dynamic = true;
-              clusterRef.lineStack[p].geometry.vertices[0].set(clusterRef.clusterPlanets[0].sphere.position.x,clusterRef.clusterPlanets[0].sphere.position.y,clusterRef.clusterPlanets[0].sphere.position.z);
-              clusterRef.lineStack[p].geometry.vertices[1].set(planetRef.sphere.position.x,planetRef.sphere.position.y,planetRef.sphere.position.z);
-              clusterRef.lineStack[p].geometry.verticesNeedUpdate = true;
+              // //change the intra-cluster network
+              // clusterRef.lineStack[p].geometry.dynamic = true;
+              // clusterRef.lineStack[p].geometry.vertices[0].set(clusterRef.clusterPlanets[0].sphere.position.x,clusterRef.clusterPlanets[0].sphere.position.y,clusterRef.clusterPlanets[0].sphere.position.z);
+              // clusterRef.lineStack[p].geometry.vertices[1].set(planetRef.sphere.position.x,planetRef.sphere.position.y,planetRef.sphere.position.z);
+              // clusterRef.lineStack[p].geometry.verticesNeedUpdate = true;
             }
           }
           //Renderer Animation managment
@@ -376,7 +368,7 @@
 
         if ( intersects.length > 0 ) {
           //change color of planet to white
-          // console.log(intersects[0].object.id);
+          console.log(intersects[0].object.id);
           intersects[ 0 ].object.material.color.setHex(0xffffff);
           // console.log(intersects[ 0 ].object);
           addOutline(intersects[0].object.uuid);
@@ -386,14 +378,6 @@
           //remove all other outlines, add outline to this one
           removeOutline(intersects[0].object.uuid);
           addOutline(intersects[0].object.uuid);
-          addLines(intersects[0].object.uuid);
-
-          // scene.getObjectById()
-          //Creates a particle where cube is clicked
-          // var particle = new THREE.Sprite( particleMaterial );
-          // particle.position = intersects[ 0 ].point;
-          // particle.scale.x = particle.scale.y = 16;
-          // scene.add( particle );
         }
 
         /*
@@ -416,17 +400,17 @@
         document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 
 
-        //Update every planet(p) of every cluster(c) 
-        for(var c=0; c < clusters.length; c++){           
-          clusterRef = clusters[c];
-          planetRef  = clusters[c].clusterPlanets[0];  
-          //iterate through every every planet of every cluster
-          for(var p=1; p < clusters[c].clusterPlanets.length; p++){
-            planetRef = clusterRef.clusterPlanets[p];
-            //change the color of every planet in the cluster
-            planetRef.sphere.material.color.setHex(["0x14A697", "0xF2C12E", "0xF29D35", "0xF27649", "0xF25252","0xF27649", "0xF25252","0x14A697", "0xF2C12E", "0xF29D35", "0xF27649", "0xF25252","0xF27649", "0xF25252"][c]);
-          }
-        }
+        // //Update every planet(p) of every cluster(c) 
+        // for(var c=0; c < clusters.length; c++){           
+        //   clusterRef = clusters[c];
+        //   planetRef  = clusters[c].clusterPlanets[0];  
+        //   //iterate through every every planet of every cluster
+        //   for(var p=1; p < clusters[c].clusterPlanets.length; p++){
+        //     planetRef = clusterRef.clusterPlanets[p];
+        //     //change the color of every planet in the cluster
+        //     planetRef.sphere.material.color.setHex(["0x14A697", "0xF2C12E", "0xF29D35", "0xF27649", "0xF25252","0xF27649", "0xF25252","0x14A697", "0xF2C12E", "0xF29D35", "0xF27649", "0xF25252","0xF27649", "0xF25252"][c]);
+        //   }
+        // }
 
         setInterval(loop, 1000/60);
       }
