@@ -7,7 +7,7 @@
     var ss = {
       "angle": 90, 
       "angleIncrement":0.001, 
-      "clusterAmplitude": 70, 
+      "clusterAmplitude": 80, 
       "planetAmplitude": 1, 
       "amplitude": 3, 
       "cycles":1,
@@ -108,6 +108,24 @@
     var relatives = [1, -1];
     var sizes  = [2,2.5,3,4,5];
     var kuler  = ["0x14A697", "0xF2C12E", "0xF29D35", "0xF27649", "0xF25252"];
+
+    var loader = new THREE.ColladaLoader();
+    loader.options.convertUpAxis = true;
+    loader.load( 'modelSandbox/collada/sesameStone.dae', function ( collada ) {
+
+      sesameStone = collada.scene;
+
+      sesameStoneMat = new THREE.MeshPhongMaterial({ ambient: 0x030303, color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading });
+
+      sesameStoneMesh = new THREE.Mesh( sesameStone.geometry, sesameStoneMat );
+
+      sesameStoneMesh.traverse( function( node ) {
+          if( node.material ) { 
+            console.log("node found");
+              node.material.side = THREE.DoubleSide;
+              node.material.opacity = 1;
+          }
+      });
 
     function createPlanets(){
         planets = []; // reference from global
@@ -355,6 +373,8 @@
       skyBox.name = "skyBox";
       scene.add( skyBox );
 
+
+
       function onDocumentMouseDown( event ) {
 
         event.preventDefault();
@@ -388,7 +408,14 @@
 
         createPlanets();
 
+
+
         projector = new THREE.Projector();
+
+        scene.add(sesameStoneMesh);
+        sesameStoneMesh.position.x = 0; 
+        sesameStoneMesh.position.y = 0; 
+        sesameStoneMesh.position.z = 0; 
 
         document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 
