@@ -83,8 +83,8 @@
     //Controls for user navigation.
     controls = new THREE.OrbitControls( camera );
     controls.addEventListener( 'change', render );
-    controls.minDistance = 20;
-    controls.maxDistance = 150;
+    controls.minDistance = 40;
+    controls.maxDistance = 400;
 
     var scene = new THREE.Scene();
     var cube  = new THREE.Mesh(
