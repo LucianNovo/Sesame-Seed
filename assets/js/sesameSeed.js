@@ -126,6 +126,12 @@
               node.material.opacity = 1;
           }
       });
+      scene.add(sesameStoneMesh);
+      sesameStoneMesh.position.x = 0; 
+      sesameStoneMesh.position.y = 0; 
+      sesameStoneMesh.position.z = 0; 
+      init();
+    });
 
     function createPlanets(){
         planets = []; // reference from global
@@ -223,11 +229,11 @@
     }
 
   // Creating the orbit
-      var paused = false;
-      var last = new Date().getTime();
-      var down = false;
-      var sx = 0;
-      var sy = 0;
+      // var paused = false;
+      // var last = new Date().getTime();
+      // var down = false;
+      // var sx = 0;
+      // var sy = 0;
 
       // window.onmousedown = function (ev){
       //   down = true; sx = ev.clientX; sy = ev.clientY;
@@ -403,19 +409,11 @@
         }
       }
 
-      init();
       function init(){
 
         createPlanets();
 
-
-
         projector = new THREE.Projector();
-
-        scene.add(sesameStoneMesh);
-        sesameStoneMesh.position.x = 0; 
-        sesameStoneMesh.position.y = 0; 
-        sesameStoneMesh.position.z = 0; 
 
         document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 
