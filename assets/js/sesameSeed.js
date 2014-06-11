@@ -7,7 +7,7 @@
     var ss = {
       "angle": 90, 
       "angleIncrement":0.001, 
-      "clusterAmplitude": 50, 
+      "clusterAmplitude": 70, 
       "planetAmplitude": 1, 
       "amplitude": 3, 
       "cycles":1,
@@ -45,6 +45,9 @@
     var planets;
     function planet(){};
     var PLANET_COUNT = 12;
+
+    //
+    imageNumbers = [1,2,3];
 
     //Cluster Variables
     var clusters = [];
@@ -84,11 +87,11 @@
     controls = new THREE.OrbitControls( camera );
     controls.addEventListener( 'change', render );
     controls.minDistance = 40;
-    controls.maxDistance = 400;
+    controls.maxDistance = 250;
 
     var scene = new THREE.Scene();
     var cube  = new THREE.Mesh(
-      new THREE.CubeGeometry(30,30,30),
+      new THREE.CubeGeometry(20,30,20),
       new THREE.MeshBasicMaterial({color: 0xCCCCCC, opacity: 1})
     );
     scene.add(cube);
@@ -365,6 +368,9 @@
         if ( intersects.length > 0 ) {
           //change color of planet to white
           console.log(intersects[0].object.id);
+          changeImg(imageNumbers[Math.floor(Math.random() * imageNumbers.length)]);
+
+          // sizes[Math.floor(Math.random() * sizes.length)];
           // intersects[ 0 ].object.material.color.setHex(0xffffff);
           // console.log(intersects[ 0 ].object);
           // addOutline(intersects[0].object.uuid);
@@ -375,15 +381,6 @@
           removeOutline(intersects[0].object.uuid);
           addOutline(intersects[0].object.uuid);
         }
-
-        /*
-        // Parse all the faces
-        for ( var i in intersects ) {
-
-          intersects[ i ].face.material[ 0 ].color.setHex( Math.random() * 0xffffff | 0x80000000 );
-
-        }
-        */
       }
 
       init();
