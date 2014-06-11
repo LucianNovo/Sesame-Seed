@@ -126,7 +126,7 @@
 
 				sesameStoneDae.scale.x = sesameStoneDae.scale.y = sesameStoneDae.scale.z = .85;
 				sesameStoneDae.position.x = centerSesame.x;
-				sesameStoneDae.position.z = 2;
+				sesameStoneDae.position.z = centerSesame.z;
 				sesameStoneDae.updateMatrix();
 
 				init();
@@ -154,7 +154,7 @@
 				scene.add(light);
 				directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
 				directionalLight.position.set( 0, 5, 0 );
-				directionalLight.lookAt(dae.position);
+				directionalLight.lookAt(sesameStoneDae.position);
 				scene.add( directionalLight );
 
 				//
@@ -173,7 +173,6 @@
 
 				//
 				var clusterCenters = [];
-
 
 				// Add a skybox				
 				var imagePrefix = "images/darkSky_";
