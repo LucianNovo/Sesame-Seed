@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Mine</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #000000;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+			#info {
+				color: #fff;
+				position: absolute;
+				top: 10px;
+				width: 100%;
+				text-align: center;
+				z-index: 100;
+				display:block;
+
+			}
+
+			a { color: skyblue }
+		</style>
+	</head>
+	<body>
+		<script src="../assets/js/three.min.js"></script>
+		<!--<script src="../cameraSandbox/camMoveTests.js"></script>-->
+		<script src="../modelSandbox/js/loaders/ColladaLoader.js"></script>
+		<script type="text/javascript">
+			var orbitSettings = {
+				disableRotate : true,
+				panMode : true
+			}
+		</script>
+		<script src="../assets/js/TweenMax.js"></script>
+		<script src="../assets/js/OrbitControls.js"></script>
+  		<script src="../cameraSandbox/cameraSettings.js"></script>
+		<script>
+			var container, stats;
+
+			var camera, scene, renderer, objects, centerSesame = new THREE.Vector3(0,0,0), cameraLine;
+			var particleLight, pointLight;
+			var dae, skin, sesameStoneDae;
+			var directionalLight;
+			var transitionFirst = true;
+
+			var colladaRef;
+			var sesameStoneRef;
+
+		    //Planet Variables
+		    var planets;
+			function planet(){};
+		    var PLANET_COUNT = 12;
+
+		    //Cluster Variables
+		    var clusters = [];
+			var cluster_count = 3;
+
+		    function createPlanets(){
+		        planets = []; // reference from global
+		        spheres = []; // reference from global
+		        for(var i=0; i<PLANET_COUNT; i++){
+		          //Sphere
+		          var geometry   = new THREE.SphereGeometry( sizes[Math.floor(Math.random() * sizes.length)], 8, 8 );
+		          var material   = new THREE.MeshBasicMaterial( {color: Number(kuler[Math.floor(Math.random() * kuler.length)])});
+		          spheres[i]     = new THREE.Mesh( geometry, material );
+
+		          //Outline
+		          var outlineMaterial1 = new THREE.MeshBasicMaterial( { opacity: 0, color: 0xff0000, side: THREE.BackSide } );
+		          var outlineMesh1 = new THREE.Mesh( geometry, outlineMaterial1 );
+		          // console.log(outlineMesh1);
+		          outlineMesh1.scale.multiplyScalar(1.1);
+
+		          // Create a new planet reference
+		          var planetSpawn = new planet();
+		          planetSpawn = {
+		            speed:      speeds[Math.floor(Math.random() * speeds.length)],
+		            relative:   relatives[Math.floor(Math.random() * relatives.length)],
+		            random:     Math.random() * speeds[speeds.length-1],
+		            cycle:      cycles[Math.floor(Math.random() * cycles.length)],
+		            targetSize: 1,
+		            orbit:      RADIUS*.5 + (RADIUS * .5 * Math.random()),
+		            geometry:   geometry,
+		            material:   material,
+		            sphereInitID: i,
+		            sphere:     spheres[i],
+		            sphereID:   spheres[i].id,
+		            planetAmplitude : Math.floor(Math.random() * 20 + 5),
+		            outline:    outlineMesh1,
+		          }
+		          scene.add(planetSpawn.sphere);
+		          planets[i] = planetSpawn;
+		        }
+
+		        //take all the planets, and put them in various clusters
+		        var cluster_inc  = 0;
+		        var cluster_iter = 0;
+		        var planet_inc   = 0;
+		        
+		        //while we haven't compiled every planet
+		        while(planet_inc < planets.length){
+		          clusters[cluster_inc] = new cluster(planet_inc);
+		          clusters[cluster_inc].cluster_ID = cluster_inc; 
+		          
+		          //for each size of each cluster
+		          for(cluster_iter = 0; ((cluster_iter < cluster_count) && (planet_inc < planets.length)); cluster_iter++){
+		            //add a planet to the iterated cluster
+		            clusters[cluster_inc].clusterPlanets[cluster_iter] = planets[planet_inc];
+		            planet_inc++;
+		          }
+		          cluster_inc++;
+		        }
+		    }
+
+
+			var loader = new THREE.ColladaLoader();
+			loader.options.convertUpAxis = true;
+			loader.load( '../modelSandbox/collada/sesameStone.dae', function ( collada ) {
+
+				sesameStoneDae = collada.scene;
+				sesameStoneRef = collada;
+
+				sesameStoneDae.scale.x = sesameStoneDae.scale.y = sesameStoneDae.scale.z = .85;
+				sesameStoneDae.position.x = centerSesame.x;
+				sesameStoneDae.position.z = 2;
+				sesameStoneDae.updateMatrix();
+
+				init();
+				animate();
+
+			} );
+
+			function init() {
+				//container
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+				scene = new THREE.Scene();
+
+				//define and position the camera
+				var VIEW_ANGLE = 45, ASPECT = window.innerWidth / window.innerHeight, NEAR = 0.1, FAR = 20000;
+				camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+				camera.position.set( 0, 1, 0 );
+				scene.add(camera);
+
+				// Add the COLLADA
+				scene.add( sesameStoneDae );
+
+				// Lights
+				var light = new THREE.AmbientLight( 0x404040 );
+				scene.add(light);
+				directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+				directionalLight.position.set( 0, 5, 0 );
+				directionalLight.lookAt(dae.position);
+				scene.add( directionalLight );
+
+				//
+				renderer = new THREE.WebGLRenderer();
+				renderer.setSize( window.innerWidth, window.innerHeight )
+				container.appendChild( renderer.domElement );
+
+
+				//
+				window.addEventListener( 'resize', onWindowResize, false );
+
+				// Add the controls
+				controls = new THREE.OrbitControls( camera );
+				controls.minDistance = 10;
+				controls.maxDistance = 150;
+
+				//
+				var clusterCenters = [];
+
+
+				// Add a skybox				
+				var imagePrefix = "images/darkSky_";
+				var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+				var imageSuffix = ".jpg";
+				var skyGeometry = new THREE.CubeGeometry( 5000, 5000, 5000 );	
+				
+				var materialArray = [];
+				for (var i = 0; i < 6; i++)
+					materialArray.push( new THREE.MeshBasicMaterial({
+						map: THREE.ImageUtils.loadTexture( imagePrefix + directions[i] + imageSuffix ),
+						side: THREE.BackSide
+					}));
+				var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
+				var skyBox  = new THREE.Mesh(skyGeometry, skyMaterial );
+				skyBox.name = "skyBox";
+				scene.add( skyBox );
+			}
+
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function animate() {
+				setInterval(loop, 1000/60);
+			}
+
+			function loop(){
+		        renderer.render(scene,camera);
+			}
+
+		</script>
+		<script type="text/javascript" src="../assets/js/sesameDuplicate.js"></script>
+	</body>
+</html>
