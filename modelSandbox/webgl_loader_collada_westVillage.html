@@ -186,7 +186,7 @@
 
 			function loop(){
 		        //set the transparency of the mesh
-		        var meshMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, transparent: true, opacity: (.99/camera.position.y) } );
+		        var meshMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, transparent: true, opacity: (1) } );
 		        setMaterial(dae, meshMaterial);
 				//set the height of the sesame stone and camera
 		        if(camera.position.y <= 80){
